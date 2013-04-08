@@ -1,0 +1,33 @@
+﻿
+-------------
+Installation
+-------------
+
+
+	1 Laden Sie die Prestashop-Originalversion 1.5.3.1 von der Entwicklerseite http://www.prestashop.com/de/download
+	2 Installieren Sie Prestashop auf Ihrem Webserver (Folgen Sie dabei den Installationsanweisungen von prestashop.com)
+	3 Klicken Sie im Adminbereich -> Modules auf Button „Add a new module“ und laden Sie die Datei germanext.zip hoch.
+	4 Suchen Sie in der Liste das germaNext-Modul und klicken Sie auf „Install“
+	5.Bearbeiten Sie entwprechend Ihren Anforderungen die Modul-Konfiguration und die betroffene CMS-Punkte
+	5 Fertig! Ihr Prestashop kann ab jetzt auch in Deutschland problemlos verwendet werden.
+
+
+
+-------------
+Update
+-------------
+	1 Deinstallieren Sie germaNext
+	2 Führen Sie, falls notwendig, das Update von Prestashop, wie auf Prestashop.com beschrieben.
+	3 Laden Sie anschließend das neue germaNext hoch und installieren Sie es. 
+	4 Überprüfen Sie alle Verbindungen zu dem CMS-Einträgen in der germaNext-Konfiguration.
+
+
+
+-----------------
+Wichtiger Hinweis
+-----------------
+Das Modul greift in die Prestashop-Struktur ein und überschreibt einige Dateien und Templates. Falls Sie Templates, 
+oder Drittanbietermodule verwenden, z.B. von templatemonster, 2link, o.ä., könnten Kompatibilitätsprobleme auftreten. 
+Kontaktieren Sie daher uns bitte zwecks Beratung, oder Anpassung.
+
+Copyright (C) 2009-2013 silbersaiten (http://www.silbersaiten.de). Alle Rechte vorbehalten.

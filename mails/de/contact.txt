@@ -1,0 +1,9 @@
+Nachricht von Ihrem Shop {shop_name}
+ 
+E-Mail-Adresse: {email}
+
+Nachricht: {message}
+
+{mail_footer_txt}
+ 
+{shop_name} powered with PrestaShop™

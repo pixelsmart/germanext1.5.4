@@ -1,0 +1,9 @@
+Nachricht von {shop_name}
+
+Nachricht
+
+{message}
+
+{mail_footer_txt}
+
+{shop_url} powered by PrestaShop™

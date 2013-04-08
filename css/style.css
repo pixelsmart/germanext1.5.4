@@ -1,0 +1,7 @@
+.gn_priceadds, .gn_adds, .gn_adds  a { font-size: 10px; color: #666; }
+
+.paiement_block,
+.order_carrier_content,
+#new_account_form fieldset { background: none!important; }
+
+tfoot, table#cart_summary tr.cart_item.odd, table#cart_summary tr.cart_total_delivery, table#cart_summary tr.cart_total_price, table#cart_summary tr.cart_total_voucher { background-color: #f3f3f3!important; }

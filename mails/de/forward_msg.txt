@@ -1,0 +1,6 @@
+{employee} wollte Ihnen diesen Chat weiterleiten.
+Kommentar: {comment}
+
+{mail_footer_txt}
+ 
+{messages}
