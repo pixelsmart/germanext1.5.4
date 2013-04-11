@@ -63,6 +63,7 @@
 
     {if $product->specificPrice AND $product->specificPrice.reduction}
     <p id="old_price">
+	<label>{l s='Old price' mod='germanext'}</label>
         <span class="bold">
         {if $priceDisplay >= 0 && $priceDisplay <= 2}
             {if $productPriceWithoutReduction > $productPrice}
