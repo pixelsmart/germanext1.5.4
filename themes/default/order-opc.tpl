@@ -79,37 +79,40 @@
 	//]]>
 </script>
 	{if $productNumber}
-        {if isset($ONLY_SHIPPING_CART) && $ONLY_SHIPPING_CART}
+		{if isset($ONLY_SHIPPING_CART) && $ONLY_SHIPPING_CART}
 		<!-- Shopping Cart -->
 		{include file="$germanext_tpl./shopping-cart.tpl"}
 		<!-- End Shopping Cart -->
-        {else}
-            {if ! isset($GN_CHECK_PAYMENT) || ! $GN_CHECK_PAYMENT}
-            <!-- Shopping Cart -->
-            {include file="$germanext_tpl./shopping-cart.tpl"}
-            <!-- End Shopping Cart -->
-            {/if}
-            {if $isLogged AND !$isGuest}
-                {include file="$tpl_dir./order-address.tpl"}
-            {else}
-                <!-- Create account / Guest account / Login block -->
-                {include file="$germanext_tpl./order-opc-new-account.tpl"}
-                <!-- END Create account / Guest account / Login block -->
-            {/if}
-            <!-- Carrier -->
-            {include file="$germanext_tpl./order-carrier.tpl"}
-            <!-- END Carrier -->
+		{else}
+			{if ! isset($GN_CHECK_PAYMENT) || ! $GN_CHECK_PAYMENT}
+			<!-- Shopping Cart -->
+			{include file="$germanext_tpl./shopping-cart.tpl"}
+			<!-- End Shopping Cart -->
+			{/if}
+			{if $isLogged AND !$isGuest}
+			{include file="$tpl_dir./order-address.tpl"}
+            		{else}
+			<!-- Create account / Guest account / Login block -->
+			{include file="$germanext_tpl./order-opc-new-account.tpl"}
+			<!-- END Create account / Guest account / Login block -->
+			{/if}
+
+			<div id="loggedWrapper" {if ! $isLogged}style="display: none;"{/if}>
+				<!-- Carrier -->
+				{include file="$germanext_tpl./order-carrier.tpl"}
+				<!-- END Carrier -->
         
-            <!-- Payment -->
-            {include file="$tpl_dir./order-payment.tpl"}
-            <!-- END Payment -->
+				<!-- Payment -->
+				{include file="$tpl_dir./order-payment.tpl"}
+				<!-- END Payment -->
             
-            {if isset($GN_CHECK_PAYMENT) && $GN_CHECK_PAYMENT}
-            <!-- Shopping Cart -->
-            {include file="$germanext_tpl./shopping-cart.tpl"}
-            <!-- End Shopping Cart -->
-            {/if}
-        {/if}
+				{if isset($GN_CHECK_PAYMENT) && $GN_CHECK_PAYMENT}
+				<!-- Shopping Cart -->
+				{include file="$germanext_tpl./shopping-cart.tpl"}
+				<!-- End Shopping Cart -->
+				{/if}
+			</div>
+		{/if}
 	{else}
 		{capture name=path}{l s='Your shopping cart' mod='germanext'}{/capture}
 		{include file="$tpl_dir./breadcrumb.tpl"}
