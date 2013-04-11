@@ -495,6 +495,7 @@ $(function() {
                         // update token
                         static_token = jsonData.token;
                         updateNewAccountToAddressBlock();
+                        $('#loggedWrapper').slideDown();
                     }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -641,6 +642,8 @@ $(function() {
                         }
                         else
                             updateNewAccountToAddressBlock();
+                            
+                       	$('#loggedWrapper').slideDown();
                     }
                     $('#opc_new_account-overlay').fadeOut('slow');
                     $('#opc_delivery_methods-overlay').fadeOut('slow');
