@@ -710,13 +710,12 @@ class Germanext extends Module
 	*/
 	public function hookHeader($params)
 	{
-		$context = Context::getContext();
-		$is_mobile = $context->getMobileDevice();
+		$is_mobile = $this->context->getMobileDevice();
 
-		if ( ! method_exists($context, 'getMobileDevice') || ! $context->getMobileDevice()) {
-			$context->controller->addCSS(_PS_CSS_DIR_.'jquery.fancybox-1.3.4.css', 'screen');
-			$context->controller->addJqueryPlugin(array('fancybox'));
-			$context->controller->addJs($this->_path . 'js/gn_tools.js');
+		if ( ! method_exists($this->context, 'getMobileDevice') || ! $this->context->getMobileDevice()) {
+			$this->context->controller->addCSS(_PS_CSS_DIR_.'jquery.fancybox-1.3.4.css', 'screen');
+			$this->context->controller->addJqueryPlugin(array('fancybox'));
+			$this->context->controller->addJs($this->_path . 'js/gn_tools.js');
 		}
 
 		$gn_configs = Configuration::getMultiple(array(
@@ -732,18 +731,18 @@ class Germanext extends Module
 			'GN_CHECK_PAYMENT'
 		));
 		
-		$CMS_SHIPPING_LINK = self::getCmsLink((int)Configuration::get('PS_CMS_ID_DELIVERY'), (int)$context->cookie->id_lang);
+		$CMS_SHIPPING_LINK = self::getCmsLink((int)Configuration::get('PS_CMS_ID_DELIVERY'), (int)$this->context->language->id);
 		
 		$gn_configs['CMS_SHIPPING_LINK'] = $CMS_SHIPPING_LINK;
 		$gn_configs['USTG'] = self::ustgInstalledAndActive();
 
 		if (is_object($context)) {
-			$context->controller->addCSS($this->_path . 'css/style.css', 'all');
-			$context->smarty->assign('germanext_tpl', GN_THEME_PATH);
-			$context->smarty->assign('germanext_tpl_mobile', GN_THEME_PATH . 'mobile/');
-			$context->smarty->assign($gn_configs);
+			$this->context->controller->addCSS($this->_path . 'css/style.css', 'all');
+			$this->context->smarty->assign('germanext_tpl', GN_THEME_PATH);
+			$this->context->smarty->assign('germanext_tpl_mobile', GN_THEME_PATH . 'mobile/');
+			$this->context->smarty->assign($gn_configs);
 			// Check if we have a listener for this controller
-			$contoller_class = get_class($context->controller);
+			$contoller_class = get_class($this->context->controller);
 			
 			if ( ! Tools::isEmpty($contoller_class) && file_exists(LISTENERS_PATH . $contoller_class . ($is_mobile ? 'Mobile' : '') . 'Listener.php')) {
 				$class_name = $contoller_class . ($is_mobile ? 'Mobile' : '') . 'Listener';
@@ -755,7 +754,7 @@ class Germanext extends Module
 					
 					$listener->setGnRelativePath();
 					
-					return $listener->execute($context);
+					return $listener->execute($this->context);
 				}
 			}
 		}
@@ -778,9 +777,7 @@ class Germanext extends Module
 	*/
 	public function hookDisplayBackOfficeHeader($params)
 	{
-		$context = Context::getContext();
-        
-		if (is_object($context)) {
+		if (is_object($this->context)) {
 			// We might need those configs in smarty to use later in templates
 			// in Back office (these are Germanext config variables, so they
 			// aren't loaded by default)
@@ -798,17 +795,17 @@ class Germanext extends Module
 			
 			$gn_configs['USTG'] = self::ustgInstalledAndActive();
 			
-			$context->smarty->assign($gn_configs);
+			$this->context->smarty->assign($gn_configs);
 			
 			// Germanext doesn't use the following code itself, but it might be
 			// useful in the future: you can create a folder with a controller
 			// name in modules/germanext/js/%CONTROLLER_NAME%/ and put js files
 			// there - they will be appended to <header> on page load.
-			$js_files = self::checkControllerJs(get_class($context->controller));
+			$js_files = self::checkControllerJs(get_class($this->context->controller));
 
 			if ($js_files && sizeof($js_files)) {
 				foreach ($js_files as $js_file) {
-					$context->controller->addJS($this->_path . $js_file);
+					$this->context->controller->addJS($this->_path . $js_file);
 				}
 			}
 		}
@@ -831,8 +828,6 @@ class Germanext extends Module
 	*/
 	public function getContent()
 	{
-		global $currentIndex, $smarty, $cookie;
-
 		$this->_html = '<h2>' . $this->displayName . '</h2>';
       
 		$url = $this->getModuleLink();
@@ -850,14 +845,14 @@ class Germanext extends Module
 		}
 		
 		$languages = Language::getLanguages();
-		$langDefault = (int)$cookie->id_lang;
+		$langDefault = (int)$this->context->language->id;
 		
-		$smarty->assign(array_merge(
+		$this->context->smarty->assign(array_merge(
 			$this->getGnVars(),
 			$this->getGnLangVars()
 		));
       
-		$smarty->assign(array(
+		$this->context->smarty->assign(array(
 			'GN_MAIL_CMS_TEXT' => array(
 			   'PS_CMS_ID_CONDITIONS' => $this->l('Conditions of use terms and conditions CMS page'),
 			   'PS_CMS_ID_REVOCATION' => $this->l('Conditions of use revocation CMS page'),
@@ -867,7 +862,7 @@ class Germanext extends Module
 			'PS_IMG_PATH'     => _PS_IMG_,
 			'PS_CSS_PATH'     => _PS_CSS_DIR_,
 			'PS_JS_PATH'      => _PS_JS_DIR_,
-			'GN_TOKEN'        => self::getPageToken('AdminCMSContent', (int)$cookie->id_employee),
+			'GN_TOKEN'        => self::getPageToken('AdminCMSContent', (int)$this->context->employee->id),
 			'GN_PATH'         => $this->_path,                             
 			'languages'       => $languages,
 			'defaultLang'     => $langDefault,
@@ -881,8 +876,8 @@ class Germanext extends Module
   
 		GN_PaymentManager::getContentVars();
 		
-		$this->_html.= $smarty->fetch(GN_PATH . 'templates/gn_content.tpl');
-		$this->_html.= $smarty->fetch(GN_PATH . 'templates/gn_base_units.tpl');
+		$this->_html.= $this->context->smarty->fetch(GN_PATH . 'templates/gn_content.tpl');
+		$this->_html.= $this->context->smarty->fetch(GN_PATH . 'templates/gn_base_units.tpl');
       
 		return $this->_html;
 	}
@@ -1226,10 +1221,7 @@ class Germanext extends Module
 	* @return string - module href
 	*/
 	private function getModuleLink() {
-		$context = Context::getContext();
-		$controller = Context::getContext()->controller;
-		
-		$class = new ReflectionClass(get_class($controller));
+		$class = new ReflectionClass(get_class($this->context->controller));
 		
 		$currentIndex = $class->getStaticPropertyValue('currentIndex');
 
@@ -1237,7 +1229,7 @@ class Germanext extends Module
 			'%s&configure=%s&token=%s&tab_module=%s&module_name=%s',
 			$currentIndex,
 			$this->name,
-			self::getPageToken('AdminModules', (int)$context->employee->id),
+			self::getPageToken('AdminModules', (int)$this->context->employee->id),
 			$this->tab,
 			$this->name
 		);
@@ -1591,7 +1583,7 @@ class Germanext extends Module
 	*/
 	public static function getThemeTemplate($template_name)
 	{
-		$is_mobile      = Context::getContext()->getMobileDevice();
+		$is_mobile      = $this->context->getMobileDevice();
 		$gn_path        = GN_THEME_PATH . ($is_mobile ? 'mobile/' : '');
 		$gn_smarty_path = 'germanext_tpl' . ($is_mobile ? '_mobile' : '');
 
@@ -1735,10 +1727,8 @@ class Germanext extends Module
 		$rewrite = (int)Configuration::get('PS_REWRITING_SETTINGS');
 		
 		if ( ! $id_lang) {
-			$context = Context::getContext();
-			
-			if (is_object($context)) {
-				$id_lang = (int)$context->language->id;
+			if (is_object($this->context)) {
+				$id_lang = (int)$this->context->language->id;
 			}
 		}
 		
@@ -1785,8 +1775,6 @@ class Germanext extends Module
 	*/
 	public static function prepareMailSend(&$params)
 	{
-		global $smarty;
-		
 		$id_lang = (int)($params['id_lang']);
 		$iso = Language::getIsoById($id_lang);
 		$path = dirname(__FILE__) . '/mails/';
@@ -1826,13 +1814,13 @@ class Germanext extends Module
 				$footer_vars[$conf_name] = (array_key_exists($conf_name, $conf) && ! Tools::isEmpty($conf[$conf_name])) ? $conf[$conf_name] : '';
 			}
 			
-			$smarty->assign($footer_vars);
+			$this->context->smarty->assign($footer_vars);
 			
 			$file = $path . $iso . '/footer_html.tpl';
-			$params['templateVars']['{mail_footer_html}'] = (file_exists($file)) ? $smarty->fetch($file) : '';
+			$params['templateVars']['{mail_footer_html}'] = (file_exists($file)) ? $this->context->smarty->fetch($file) : '';
 			
 			$file = $path . $iso . '/footer_txt.tpl';
-			$params['templateVars']['{mail_footer_txt}']  = (file_exists($file)) ? $smarty->fetch($file) : '';
+			$params['templateVars']['{mail_footer_txt}']  = (file_exists($file)) ? $this->context->smarty->fetch($file) : '';
 			
 			$agbCmsKey = Configuration::get('GN_MAIL_CMS');
 			
