@@ -411,7 +411,7 @@
 	<div class="clear">&nbsp;</div>
 	<div style="float:left;width:50%">
 		{* Last connections *}
-		{if count($connections)}
+		{if isset($PS_PSTATISTIC) && $PS_PSTATISTIC == 1 && isset($customer->statistic) && $customer->statistic == 1 && count($connections)}
 			<h2>{l s='Last connections' mod='germanext'}</h2>
 			<table cellspacing="0" cellpadding="0" class="table" style="width:100%;">
 					<colgroup>
