@@ -10,7 +10,7 @@ $_gn_db_alter = array(
             'field' => 'unit_net',
             'data'  => 'DECIMAL(20, 3) NOT NULL DEFAULT \'0.000\'',
             'after' => 'unit_price_ratio',
-            'drop'  => true
+            'drop'  => false
         )
     ),
     'product_lang' => array(
@@ -28,7 +28,7 @@ $_gn_db_alter = array(
             'field' => 'unit_net_impact',
             'data'  => 'DECIMAL(20, 3) NOT NULL DEFAULT \'0.000\'',
             'after' => 'unit_price_impact',
-            'drop'  => true
+            'drop'  => false
         )
     ),
     'product_attribute_shop' => array(
@@ -37,7 +37,7 @@ $_gn_db_alter = array(
             'field' => 'unit_net_impact',
             'data'  => 'DECIMAL(20, 3) NOT NULL DEFAULT \'0.000\'',
             'after' => 'unit_price_impact',
-            'drop'  => true
+            'drop'  => false
         )
     ),
     'attribute_impact' => array(
@@ -46,7 +46,7 @@ $_gn_db_alter = array(
             'field' => 'net',
             'data'  => 'DECIMAL(20, 3) NOT NULL DEFAULT \'0.000\'',
             'after' => 'weight',
-            'drop'  => true
+            'drop'  => false
         )
     ),
     'cart' => array(
