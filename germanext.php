@@ -49,8 +49,7 @@ class Germanext extends Module
 	
 	private static $_pdfTranslations = array();
     
-	public function __construct()
-	{
+	public function __construct() {
 		$this->name    = 'germanext';
 		$this->tab     = 'administration';
 		$this->version = '1.5.4';
@@ -68,16 +67,14 @@ class Germanext extends Module
 	 *                                                                        *
 	 * Search points: install, create, setup, uninstall, destroy, purge       *
 	 **************************************************************************/
-	public function install()
-	{
+	public function install() {
 		$backup = $this->copyDir(_PS_ROOT_DIR_, GN_BACKUP_PATH, GN_INSTALL_COPY_PATH);
 
 		if ( ! $backup
 			|| ! $this->setConfigs(true)
 			|| ! $this->setCMS()
 			|| ! $this->makeDbChanges()
-			|| ! $this->installTables())
-		{
+			|| ! $this->installTables()) {
 			$this->uninstall();
 
 			return false;
@@ -107,11 +104,13 @@ class Germanext extends Module
 			return false;
 		}
 		
+		@unlink(_PS_CACHE_DIR_ . 'class_index.php');
+		$this->writeModuleConfig('is_installed', '1');
+		
 		return true;
 	}
     
-	public function uninstall()
-	{
+	public function uninstall() {
 		if (parent::uninstall()) {
 			$this->copyDir(GN_BACKUP_PATH, _PS_ROOT_DIR_);
             
@@ -120,10 +119,41 @@ class Germanext extends Module
 			$this->uninstallTables();
 			$this->setConfigs(false);
 			
+			@unlink(_PS_CACHE_DIR_ . 'class_index.php');
+			$this->writeModuleConfig('is_installed', '0');
+			
 			return true;
 		}
 		
 		return false;
+	}
+	
+	public function disable($forceAll = false) {
+		parent::disable($forceAll);
+
+		@unlink(_PS_CACHE_DIR_ . 'class_index.php');
+		$this->writeModuleConfig('is_enabled', '0');
+	}
+	
+	public function enable($forceAll = false) {
+		parent::enable($forceAll);
+		
+		@unlink(_PS_CACHE_DIR_ . 'class_index.php');
+		$this->writeModuleConfig('is_enabled', '1');
+	}
+	
+	private function writeModuleConfig($node_name, $node_value) {
+		$path = _PS_MODULE_DIR_ . $this->name . '/config.xml';
+		
+		if (file_exists($path) && $xml = simplexml_load_file($path)) {
+			if ( ! sizeof($xml->xpath($node_name))) {
+				$xml->addChild($node_name, $node_value);
+			} else {
+				$xml->{$node_name} = $node_value;
+			}
+			
+			$xml->asXML($path);
+		}
 	}
     
     
@@ -138,8 +168,7 @@ class Germanext extends Module
 	*
 	* @return bool
 	*/
-	private function setConfigs($install = true)
-	{
+	private function setConfigs($install = true) {
 		$languages = Language::getLanguages();
 		// This is where the array with configuration variables is stored to
 		// keep this file clean.
@@ -512,7 +541,7 @@ class Germanext extends Module
         
 		if (sizeof($_gn_queries)) {
 			foreach (array_keys($_gn_queries) as $table) {
-				if (self::tableExists(_DB_PREFIX_ . $table)) {
+				if ($table != 'base_unit' && self::tableExists(_DB_PREFIX_ . $table)) {
 					Db::getInstance()->Execute('DROP TABLE `' . _DB_PREFIX_ . pSQL($table) . '`');
 				}
 			}
