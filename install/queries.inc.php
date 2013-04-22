@@ -17,7 +17,7 @@ $_gn_queries = array(
             `cost_name` TEXT
         ) ENGINE=%ENGINE% DEFAULT CHARSET=utf8;',
         
-    'base_units' =>
+    'base_unit' =>
         'CREATE TABLE IF NOT EXISTS `%PREFIX%base_unit` (
             `id_base_unit` INT(10) unsigned NOT NULL AUTO_INCREMENT,
             `name` VARCHAR(12) NOT NULL,
