@@ -144,21 +144,24 @@ class Category extends CategoryCore
 					.($id_supplier ? ' AND p.id_supplier = '.(int)$id_supplier : '');
 
 		$sql .= ' GROUP BY p.`id_product`';
-		if ($random === true)
-		{
+		if ($random === true) {
 			$sql .= ' ORDER BY RAND()';
 			$sql .= ' LIMIT 0, '.(int)$random_number_products;
 		}
-		else
+		else {
 			$sql .= ' ORDER BY '.(isset($order_by_prefix) ? $order_by_prefix.'.' : '').'`'.pSQL($order_by).'` '.pSQL($order_way).'
 			LIMIT '.(((int)$p - 1) * (int)$n).','.(int)$n;
+		}
 
 		$result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
-		if ($order_by == 'orderprice')
+		
+		if ($order_by == 'orderprice') {
 			Tools::orderbyPrice($result, $order_way);
+		}
 
-		if (!$result)
+		if ( ! $result) {
 			return array();
+		}
 
 		/* Modify SQL result */
 		return Product::getProductsProperties($id_lang, $result);
