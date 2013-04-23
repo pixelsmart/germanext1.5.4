@@ -143,8 +143,7 @@ class Germanext extends Module
 	}
 	
 	protected function _generateConfigXml() {
-		$xml = '
-		<?xml version="1.0" encoding="UTF-8" ?>
+		$xml = '<?xml version="1.0" encoding="UTF-8" ?>
 		<module>
 			<name>'.$this->name.'</name>
 			<displayName><![CDATA['.Tools::htmlentitiesUTF8($this->displayName).']]></displayName>
