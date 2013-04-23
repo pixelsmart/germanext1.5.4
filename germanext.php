@@ -803,6 +803,7 @@ class Germanext extends Module
 			// in Back office (these are Germanext config variables, so they
 			// aren't loaded by default)
 			$gn_configs = Configuration::getMultiple(array(
+				'GN_FORCE_STAT_GATHER',
 				'PS_PSTATISTIC',
 				'PS_ORDER_PROCESS_TYPE',
 				'PS_CONDITIONS',
