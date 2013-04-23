@@ -39,19 +39,19 @@ class Product extends ProductCore
 		$price = str_replace(',', '.', $price);
 		$weight = str_replace(',', '.', $weight);
 
-		$combination->price = (float)$price;
-		$combination->wholesale_price = (float)$wholesale_price;
-		$combination->ecotax = (float)$ecotax;
-		$combination->weight = (float)$weight;
+		$combination->price             = (float)$price;
+		$combination->wholesale_price   = (float)$wholesale_price;
+		$combination->ecotax            = (float)$ecotax;
+		$combination->weight            = (float)$weight;
 		$combination->unit_price_impact = (float)$unit;
-		$combination->unit_net_impact = (float)$net;
-		$combination->reference = pSQL($reference);
-		$combination->location = pSQL($location);
-		$combination->ean13 = pSQL($ean13);
-		$combination->upc = pSQL($upc);
-		$combination->default_on = (int)$default;
-		$combination->minimal_quantity = (int)$minimal_quantity;
-		$combination->available_date = $available_date ? pSQL($available_date) : '0000-00-00';
+		$combination->unit_net_impact   = (float)$net;
+		$combination->reference         = pSQL($reference);
+		$combination->location          = pSQL($location);
+		$combination->ean13             = pSQL($ean13);
+		$combination->upc               = pSQL($upc);
+		$combination->default_on        = (int)$default;
+		$combination->minimal_quantity  = (int)$minimal_quantity;
+		$combination->available_date    = $available_date ? pSQL($available_date) : '0000-00-00';
 		
 		if (count($id_shop_list)) {
 			$combination->id_shop_list = $id_shop_list;
