@@ -1,7 +1,7 @@
 <?php
 abstract class Module extends ModuleCore
 {
-    public static function getGnTemplatePath($module, $template) {
+	public static function getGnTemplatePath($module, $template) {
 		if (Module::isInstalled('germanext')) {
 			require_once(_PS_MODULE_DIR_ . 'germanext/defines.php');
             
@@ -15,7 +15,7 @@ abstract class Module extends ModuleCore
 		return false;
 	}
     
-    public function getTemplatePath($template) {
+	public function getTemplatePath($template) {
 		$overloaded = $this->_isTemplateOverloaded($template);
         
 		if (is_null($overloaded)) {
