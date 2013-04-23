@@ -215,8 +215,7 @@ class Germanext extends Module
 	*
 	* @return void
 	*/
-	private static function setCMS()
-	{
+	private static function setCMS() {
 		// This is where the array with cms data is stored to keep this file
 		// clean.
 		require_once(GN_INSTALL_PATH . 'cms.inc.php');
@@ -272,8 +271,7 @@ class Germanext extends Module
 	*
 	* @return void
 	*/
-	private function updateCountries()
-	{
+	private function updateCountries() {
 		// This is where the array with cms data is stored to keep this file
 		// clean.
 		require_once(GN_INSTALL_PATH . 'countries.inc.php');
@@ -317,8 +315,7 @@ class Germanext extends Module
 	*
 	* @return void
 	*/
-	private function setCountryZone()
-	{
+	private function setCountryZone() {
 		Db::getInstance()->Execute('UPDATE `' . _DB_PREFIX_ . 'zone` SET `active` = 1 WHERE `name` = "Europe"');
 		
 		Db::getInstance()->Execute('UPDATE `' . _DB_PREFIX_ . 'zone` SET `active` = 0 WHERE `name` <> "Europe"');
@@ -336,8 +333,7 @@ class Germanext extends Module
 	*
 	* @return void
 	*/
-	private function updateOrderStates()
-	{
+	private function updateOrderStates() {
 		$id_lang = Language::getIdByIso('de');
         
 		if ( ! $id_lang || ! Validate::isUnsignedId($id_lang)) {
@@ -400,7 +396,7 @@ class Germanext extends Module
 			$id = $data[0];
 			$name = $data[1];
            
-			if ( Db::getInstance()->ExecuteS('SELECT 1 FROM `' . _DB_PREFIX_ . 'order_return_state_lang` WHERE `id_order_return_state` = ' . (int)$id . ' AND `id_lang` = ' . (int)$id_lang)) {
+			if (Db::getInstance()->ExecuteS('SELECT 1 FROM `' . _DB_PREFIX_ . 'order_return_state_lang` WHERE `id_order_return_state` = ' . (int)$id . ' AND `id_lang` = ' . (int)$id_lang)) {
 				$query = '
 				    UPDATE
 				        `' . _DB_PREFIX_ . 'order_return_state_lang`
@@ -439,8 +435,7 @@ class Germanext extends Module
 	*
 	* @return bool
 	*/
-	private function makeDbChanges()
-	{
+	private function makeDbChanges() {
 		// This is where the array with database sturture changes is stored to
 		// keep this file clean.
 		require_once(GN_INSTALL_PATH . 'db_alter.inc.php');
@@ -510,8 +505,7 @@ class Germanext extends Module
 	*
 	* @return bool
 	*/
-	private function installTables()
-	{
+	private function installTables() {
 		require_once(GN_INSTALL_PATH . 'queries.inc.php');
         
 		if (sizeof($_gn_queries)) {
@@ -535,8 +529,7 @@ class Germanext extends Module
 	*
 	* @return void
 	*/
-	private function uninstallTables()
-	{
+	private function uninstallTables() {
 		require_once(GN_INSTALL_PATH . 'queries.inc.php');
         
 		if (sizeof($_gn_queries)) {
@@ -572,8 +565,7 @@ class Germanext extends Module
 	*
 	* @return bool
 	*/
-	private static function tableExists($table, $useCache = true)
-	{
+	private static function tableExists($table, $useCache = true) {
 		if ( ! sizeof(self::$_tblCache) || ! $useCache) {
 			$tmp = Db::getInstance()->ExecuteS('SHOW TABLES');
         
@@ -605,8 +597,7 @@ class Germanext extends Module
 	*
 	* @return void - results are assigned to $_fieldCache property.
 	*/
-	private static function cacheTableFields($tables)
-	{
+	private static function cacheTableFields($tables) {
 		if ( ! is_array($tables) || ! sizeof($tables)) {
 			return false;
 		}
@@ -644,8 +635,7 @@ class Germanext extends Module
 	*
 	* @return bool
 	*/
-	private static function fieldExists($table, $field)
-	{
+	private static function fieldExists($table, $field) {
 		if ( ! self::tableExists($table)) {
 			die(Tools::displayError('Table does not exist:') . ' ' . $table);
 		}
@@ -667,8 +657,7 @@ class Germanext extends Module
 	*
 	* @return bool
 	*/
-	private static function alterDrop($table, $field)
-	{
+	private static function alterDrop($table, $field) {
 		// Table check is performed in the fieldExists method, no need to check
 		// here.
 		if ( ! self::fieldExists($table, $field)) {
@@ -690,8 +679,7 @@ class Germanext extends Module
 	}
 	
 	
-	private function registerPaymentModules()
-	{
+	private function registerPaymentModules() {
 		$existing_sql = Db::getInstance()->ExecuteS('SELECT * FROM `' . _DB_PREFIX_ . 'payment_cost`');
 		$existing_modules = array();
 		
@@ -737,8 +725,7 @@ class Germanext extends Module
 	*
 	* @return void
 	*/
-	public function hookHeader($params)
-	{
+	public function hookHeader($params) {
 		$is_mobile = $this->context->getMobileDevice();
 
 		if ( ! method_exists($this->context, 'getMobileDevice') || ! $this->context->getMobileDevice()) {
@@ -789,8 +776,7 @@ class Germanext extends Module
 		}
 	}
 	
-	protected function setGnRelativePath()
-	{
+	protected function setGnRelativePath() {
 		$this->_path = GN_REL_PATH;
 	}
 	
@@ -804,8 +790,7 @@ class Germanext extends Module
 	*
 	* @return bool
 	*/
-	public function hookDisplayBackOfficeHeader($params)
-	{
+	public function hookDisplayBackOfficeHeader($params) {
 		if (is_object($this->context)) {
 			// We might need those configs in smarty to use later in templates
 			// in Back office (these are Germanext config variables, so they
@@ -855,8 +840,7 @@ class Germanext extends Module
 	*
 	* @return string - html content
 	*/
-	public function getContent()
-	{
+	public function getContent() {
 		$this->_html = '<h2>' . $this->displayName . '</h2>';
       
 		$url = $this->getModuleLink();
@@ -925,8 +909,7 @@ class Germanext extends Module
 	*
 	* @return mixed - a found value or false
 	*/
-	private static function getLangIdFromPost($postKey, $fromArray = false)
-	{
+	private static function getLangIdFromPost($postKey, $fromArray = false) {
 		$result = array();
 	   
 		$fromArray = $fromArray ? $fromArray : $_POST;
@@ -959,8 +942,7 @@ class Germanext extends Module
 	*
 	* @return void
 	*/
-	private static function updateLangConfigValues($data)
-	{
+	private static function updateLangConfigValues($data) {
 		if ( ! is_array($data)) {
 		   return false;
 		}
@@ -992,8 +974,7 @@ class Germanext extends Module
 	*
 	* @return integer
 	*/
-	private static function getNextModuleId()
-	{
+	private static function getNextModuleId() {
 		$currentId = (int)Db::getInstance()->getValue('
 			SELECT
 				MAX(`id_payment`)
@@ -1016,16 +997,14 @@ class Germanext extends Module
 	*
 	* @return boolean
 	*/
-	private static function checkNewModuleFiles($moduleName)
-	{
+	private static function checkNewModuleFiles($moduleName) {
 		$dir = GN_PAYMENT_MODULES_PATH . $moduleName . '/';
 		$file = $dir . $moduleName . '.php';
 	   
 		return (file_exists($dir) && is_dir($dir) && file_exists($file));
 	}
 	
-	private function saveBaseUnits($units)
-	{
+	private function saveBaseUnits($units) {
 		$new_units       = array();
 		$existing_units  = array();
 		$units_to_delete = array();
@@ -1091,8 +1070,7 @@ class Germanext extends Module
 		return false;
 	}
 	
-	private static function checkPaymentModuleExists($name)
-	{
+	private static function checkPaymentModuleExists($name) {
 		return Db::getInstance()->getValue('
 			SELECT 
 				`module` 
@@ -1114,8 +1092,7 @@ class Germanext extends Module
 	*
 	* @return boolean
 	*/
-	private function addNewPaymentModule($moduleData)
-	{
+	private function addNewPaymentModule($moduleData) {
 		$id = self::getNextModuleId();
 		
 		$name = array_key_exists('newGnModule_name', $moduleData) ? $moduleData['newGnModule_name'] : false;
@@ -1184,8 +1161,7 @@ class Germanext extends Module
 	*
 	* @return array
 	*/
-	public function getGnVars()
-	{
+	public function getGnVars() {
 		return Configuration::getMultiple(array(
 			'GN_MAIL_CMS',
 			'PS_PRIVACY',
@@ -1203,8 +1179,7 @@ class Germanext extends Module
 	*
 	* @return array
 	*/
-	public function getGnLangVars()
-	{
+	public function getGnLangVars() {
 		$vars = array(
 			'GN_AVAILABLE_NOW',
 			'GN_AVAILABLE_LATER',
@@ -1236,8 +1211,7 @@ class Germanext extends Module
 	*
 	* @return string - token
 	*/
-	private static function getPageToken($classname, $id_employee)
-	{
+	private static function getPageToken($classname, $id_employee) {
 		return Tools::getAdminToken($classname . (int)Tab::getIdFromClassName($classname) . (int)$id_employee);
 	}
     
@@ -1271,8 +1245,7 @@ class Germanext extends Module
 	*
 	* @access public
 	*/
-	public function _postProcess()
-	{
+	public function _postProcess() {
 		$url = $this->getModuleLink();
 		
 		if ( ! empty($_POST['GN_BTN_SAVE'])) {
@@ -1334,8 +1307,7 @@ class Germanext extends Module
 	 *
 	 * @return void
 	 */
-	private function displayErrors()
-	{
+	private function displayErrors() {
 		if (sizeof($this->_postErrors)) {
 			foreach ($this->_postErrors as $error) {
 				$this->_html.= parent::displayError($error);
@@ -1369,8 +1341,7 @@ class Germanext extends Module
 	*
 	* @return bool
 	*/
-	private function copyDir($src, $dst, $list = null, $delete_original = false)
-	{
+	private function copyDir($src, $dst, $list = null, $delete_original = false) {
 		$res = true;
 		
 		$src = rtrim(rtrim($src, '/'), '\\');
@@ -1470,8 +1441,7 @@ class Germanext extends Module
 	*
 	* @return bool
 	*/
-	private function deleteDir($dir, $filesOnly = false)
-	{   
+	private function deleteDir($dir, $filesOnly = false) {   
 		if (is_dir($dir)) {
 			$objects = scandir($dir);
             
@@ -1490,8 +1460,7 @@ class Germanext extends Module
 		 
 			reset($objects);
 	  
-			if ( ! $filesOnly)
-			{
+			if ( ! $filesOnly) {
 				rmdir($dir);
 			}
 		}
@@ -1506,8 +1475,7 @@ class Germanext extends Module
 	 *                                                                        *
 	 * Search points: helper, miscellaneous, misc, others                     *
 	 **************************************************************************/
-	public function removeJs($context, $js)
-	{
+	public function removeJs($context, $js) {
 		foreach ($context->controller->js_files as $i => $file) {
 			if (strstr($file, $js)) {
 				unset($context->controller->js_files[$i]);
@@ -1516,8 +1484,7 @@ class Germanext extends Module
 	}
 	
 	
-	private static function ustgInstalledAndActive()
-	{
+	private static function ustgInstalledAndActive() {
 		return (Module::isInstalled('smallscaleenterprise') && (int)Configuration::get('USTG_ACTIVE') == 1);
 	}
 	
@@ -1536,8 +1503,7 @@ class Germanext extends Module
 	*
 	* @return bool
 	*/
-	public static function getBaseUnits()
-	{
+	public static function getBaseUnits() {
 		$prepared = array();
 		$base_units = Db::getInstance()->ExecuteS('
 			SELECT
@@ -1557,8 +1523,7 @@ class Germanext extends Module
 		return false;
 	}
 	
-	public static function getBaseUnitById($id)
-	{
+	public static function getBaseUnitById($id) {
 		return Db::getInstance()->getValue('
 			SELECT
 				`name`
@@ -1569,8 +1534,7 @@ class Germanext extends Module
 		);
 	}
 	
-	public static function getTemplateByController($controller, $template, $theme = false, $is_admin = false)
-	{
+	public static function getTemplateByController($controller, $template, $theme = false, $is_admin = false) {
 		if ($is_admin) {
 			$theme_path = GN_THEMES_PATH . 'admin/' . $theme . '/' . $controller . '/';
 		}
@@ -1610,9 +1574,8 @@ class Germanext extends Module
 	*
 	* @return string
 	*/
-	public static function getThemeTemplate($template_name)
-	{
-		$is_mobile      = $this->context->getMobileDevice();
+	public static function getThemeTemplate($template_name) {
+		$is_mobile      = Context::getContext()->getMobileDevice();
 		$gn_path        = GN_THEME_PATH . ($is_mobile ? 'mobile/' : '');
 		$gn_smarty_path = 'germanext_tpl' . ($is_mobile ? '_mobile' : '');
 
@@ -1641,8 +1604,7 @@ class Germanext extends Module
 	*
 	* @return boolean
 	*/
-	public static function stringStartsWith($haystack, $needle)
-	{
+	public static function stringStartsWith($haystack, $needle) {
 		$length = strlen($needle);
 	   
 		return (substr($haystack, 0, $length) === $needle);
@@ -1660,8 +1622,7 @@ class Germanext extends Module
 	*
 	* @return boolean
 	*/
-	public static function isLanguageId($id_lang)
-	{
+	public static function isLanguageId($id_lang) {
 		if ( ! is_array(self::$_languages)) {
 			self::$_languages = Language::getLanguages();
 		}
@@ -1689,8 +1650,7 @@ class Germanext extends Module
 	*
 	* @return mixed
 	*/
-	public static function checkControllerJs($controller)
-	{
+	public static function checkControllerJs($controller) {
 		$path        = GN_PATH . 'js/admin/';
 		$detected_js = array();
 
@@ -1720,8 +1680,7 @@ class Germanext extends Module
 	*
 	* @return integer
 	*/
-	public static function getGernamextNewsLetterState()
-	{
+	public static function getGernamextNewsLetterState() {
 		if ( ! Validate::isLoadedObject($newsletter = Module::getInstanceByName('blocknewslettergermanext'))) {
 			return 0;
 		}
@@ -1747,8 +1706,7 @@ class Germanext extends Module
 	*
 	* @return string
 	*/
-	public static function getCmsLink($id_cms, $id_lang = false, $ssl = false)
-	{
+	public static function getCmsLink($id_cms, $id_lang = false, $ssl = false) {
 		if ( ! Validate::isUnsignedId($id_cms)) {
 			return false;
 		}
@@ -1802,8 +1760,7 @@ class Germanext extends Module
 	*
 	* @return void
 	*/
-	public static function prepareMailSend(&$params)
-	{
+	public static function prepareMailSend(&$params) {
 		$id_lang = (int)($params['id_lang']);
 		$iso = Language::getIsoById($id_lang);
 		$path = dirname(__FILE__) . '/mails/';
