@@ -105,7 +105,7 @@ class Germanext extends Module
 		}
 		
 		@unlink(_PS_CACHE_DIR_ . 'class_index.php');
-		$this->writeModuleConfig('is_installed', '1');
+		$this->_generateConfigXml();
 		
 		return true;
 	}
@@ -120,7 +120,7 @@ class Germanext extends Module
 			$this->setConfigs(false);
 			
 			@unlink(_PS_CACHE_DIR_ . 'class_index.php');
-			$this->writeModuleConfig('is_installed', '0');
+			$this->_generateConfigXml();
 			
 			return true;
 		}
@@ -132,27 +132,34 @@ class Germanext extends Module
 		parent::disable($forceAll);
 
 		@unlink(_PS_CACHE_DIR_ . 'class_index.php');
-		$this->writeModuleConfig('is_enabled', '0');
+		$this->_generateConfigXml();
 	}
 	
 	public function enable($forceAll = false) {
 		parent::enable($forceAll);
 		
 		@unlink(_PS_CACHE_DIR_ . 'class_index.php');
-		$this->writeModuleConfig('is_enabled', '1');
+		$this->_generateConfigXml();
 	}
 	
-	private function writeModuleConfig($node_name, $node_value) {
-		$path = _PS_MODULE_DIR_ . $this->name . '/config.xml';
+	protected function _generateConfigXml() {
+		$xml = '
+		<?xml version="1.0" encoding="UTF-8" ?>
+		<module>
+			<name>'.$this->name.'</name>
+			<displayName><![CDATA['.Tools::htmlentitiesUTF8($this->displayName).']]></displayName>
+			<version><![CDATA['.$this->version.']]></version>
+			<description><![CDATA['.Tools::htmlentitiesUTF8($this->description).']]></description>
+			<author><![CDATA['.Tools::htmlentitiesUTF8($this->author).']]></author>
+			<tab><![CDATA['.Tools::htmlentitiesUTF8($this->tab).']]></tab>'.(isset($this->confirmUninstall) ? "\n\t".'<confirmUninstall>'.$this->confirmUninstall.'</confirmUninstall>' : '').'
+			<is_configurable>'.(isset($this->is_configurable) ? (int)$this->is_configurable : 0).'</is_configurable>
+			<need_instance>'.(int)$this->need_instance.'</need_instance>'.(isset($this->limited_countries) ? "\n\t".'<limited_countries>'.(count($this->limited_countries) == 1 ? $this->limited_countries[0] : '').'</limited_countries>' : '').'
+			<is_installed>' . self::isInstalled($this->name) . '</is_installed>
+			<is_enabled>' . self::isEnabled($this->name) . '</is_enabled>
+		</module>';
 		
-		if (file_exists($path) && $xml = simplexml_load_file($path)) {
-			if ( ! sizeof($xml->xpath($node_name))) {
-				$xml->addChild($node_name, $node_value);
-			} else {
-				$xml->{$node_name} = $node_value;
-			}
-			
-			$xml->asXML($path);
+		if (is_writable(_PS_MODULE_DIR_.$this->name.'/')) {
+			file_put_contents(_PS_MODULE_DIR_ . $this->name . '/config.xml', $xml);
 		}
 	}
     
