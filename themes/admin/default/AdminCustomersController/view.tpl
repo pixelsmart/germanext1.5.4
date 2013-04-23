@@ -1,35 +1,37 @@
 {extends file="helpers/view/view.tpl"}
 {block name="override_tpl"}
-	<script type="text/javascript">
-		function saveCustomerNote()
-		{
-			$('#note_feedback').html('<img src="../img/loader.gif" />').show();
-			var noteContent = $('#noteContent').val();
+<script type="text/javascript">
+	function saveCustomerNote() {
+		$('#note_feedback').html('<img src="../img/loader.gif" />').show();
+		var noteContent = $('#noteContent').val();
 	
-			$.ajax({
-				type: "POST",
-				url: "ajax.php",
-				data: "submitCustomerNote=1&id_customer={$customer->id}&note="+noteContent,
-				async : true,
-				success: function(r) {
-					$('#note_feedback').html('').hide();
-					if (r == 'ok')
-					{
-						$('#note_feedback').html("<b style='color:green'>{l s='Your note has been saved.' mod='germanext'}</b>").fadeIn(400);
-						$('#submitCustomerNote').attr('disabled', 'disabled');
-					}
-					else if (r == 'error:validation')
-						$('#note_feedback').html("<b style='color:red'>({l s='Error: your note is not valid.' mod='germanext'}</b>").fadeIn(400);
-					else if (r == 'error:update')
-						$('#note_feedback').html("<b style='color:red'>{l s='Error: cannot save your note.' mod='germanext'}</b>").fadeIn(400);
-					$('#note_feedback').fadeOut(3000);
+		$.ajax({
+			type: "POST",
+			url: "ajax.php",
+			data: "submitCustomerNote=1&id_customer={$customer->id}&note="+noteContent,
+			async : true,
+			success: function(r) {
+				$('#note_feedback').html('').hide();
+
+				if (r == 'ok') {
+					$('#note_feedback').html("<b style='color:green'>{l s='Your note has been saved.' mod='germanext'}</b>").fadeIn(400);
+					$('#submitCustomerNote').attr('disabled', 'disabled');
 				}
-			});
-		}
-	</script>
+				else if (r == 'error:validation') {
+					$('#note_feedback').html("<b style='color:red'>({l s='Error: your note is not valid.' mod='germanext'}</b>").fadeIn(400);
+				}
+				else if (r == 'error:update') {
+					$('#note_feedback').html("<b style='color:red'>{l s='Error: cannot save your note.' mod='germanext'}</b>").fadeIn(400);
+				}
+
+				$('#note_feedback').fadeOut(3000);
+			}
+		});
+	}
+</script>
 <div id="container-customer">
 	<div class="info-customer-left">
-			<div style="float: right">
+		<div style="float: right">
 			<a href="{$current}&addcustomer&id_customer={$customer->id}&token={$token}">
 				<img src="../img/admin/edit.gif" />
 			</a>
@@ -75,9 +77,8 @@
 				{/if}
 			</div>
 		{/if}
-
-</div>
-<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
 	<div class="separation"></div>
 	
 	<div>
@@ -104,15 +105,15 @@
 					<th class="center">{l s='Sent on' mod='germanext'}</th>
 				</tr>
 				{foreach $messages AS $message}
-					<tr>
-						<td>{$message['status']}</td>
-						<td>
-							<a href="index.php?tab=AdminCustomerThreads&id_customer_thread={$message.id_customer_thread}&viewcustomer_thread&token={getAdminToken tab='AdminCustomerThreads'}">
-								{$message['message']}...
-							</a>
-						</td>
-						<td>{$message['date_add']}</td>
-					</tr>
+				<tr>
+					<td>{$message['status']}</td>
+					<td>
+						<a href="index.php?tab=AdminCustomerThreads&id_customer_thread={$message.id_customer_thread}&viewcustomer_thread&token={getAdminToken tab='AdminCustomerThreads'}">
+							{$message['message']}...
+						</a>
+					</td>
+					<td>{$message['date_add']}</td>
+				</tr>
 				{/foreach}
 			</table>
 			<div class="clear">&nbsp;</div>
@@ -184,15 +185,15 @@
 							<th class="center">{l s='Actions' mod='germanext'}</th>
 						</tr>
 						{foreach $orders_ok AS $key => $order}
-							<tr {if $key %2}class="alt_row"{/if} style="cursor: pointer" onclick="document.location = '?tab=AdminOrders&id_order={$order['id_order']}&vieworder&token={getAdminToken tab='AdminOrders'}'">
-								<td class="left">{$order['id_order']}</td>
-								<td class="left">{$order['date_add']}</td>
-								<td class="left">{$order['payment']}</td>
-								<td class="left">{$order['order_state']}</td>
-								<td align="right">{$order['nb_products']}</td>
-								<td align="right">{$order['total_paid_real']}</td>
-								<td align="center"><a href="?tab=AdminOrders&id_order={$order['id_order']}&vieworder&token={getAdminToken tab='AdminOrders'}"><img src="../img/admin/details.gif" /></a></td>
-							</tr>
+						<tr {if $key %2}class="alt_row"{/if} style="cursor: pointer" onclick="document.location = '?tab=AdminOrders&id_order={$order['id_order']}&vieworder&token={getAdminToken tab='AdminOrders'}'">
+							<td class="left">{$order['id_order']}</td>
+							<td class="left">{$order['date_add']}</td>
+							<td class="left">{$order['payment']}</td>
+							<td class="left">{$order['order_state']}</td>
+							<td align="right">{$order['nb_products']}</td>
+							<td align="right">{$order['total_paid_real']}</td>
+							<td align="center"><a href="?tab=AdminOrders&id_order={$order['id_order']}&vieworder&token={getAdminToken tab='AdminOrders'}"><img src="../img/admin/details.gif" /></a></td>
+						</tr>
 						{/foreach}
 					</table>
 				</div>
@@ -220,15 +221,15 @@
 							<th class="center">{l s='Actions' mod='germanext'}</th>
 						</tr>
 						{foreach $orders_ko AS $key => $order}
-							<tr {if $key %2}class="alt_row"{/if} style="cursor: pointer" onclick="document.location = '?tab=AdminOrders&id_order={$order['id_order']}&vieworder&token={getAdminToken tab='AdminOrders'}'">
-								<td class="left">{$order['id_order']}</td>
-								<td class="left">{$order['date_add']}</td>
-								<td class="left">{$order['payment']}</td>
-								<td class="left">{$order['order_state']}</td>
-															<td align="right">{$order['nb_products']}</td>
-								<td align="right">{$order['total_paid_real']}</td>
-								<td align="center"><a href="?tab=AdminOrders&id_order={$order['id_order']}&vieworder&token={getAdminToken tab='AdminOrders'}"><img src="../img/admin/details.gif" /></a></td>
-							</tr>
+						<tr {if $key %2}class="alt_row"{/if} style="cursor: pointer" onclick="document.location = '?tab=AdminOrders&id_order={$order['id_order']}&vieworder&token={getAdminToken tab='AdminOrders'}'">
+							<td class="left">{$order['id_order']}</td>
+							<td class="left">{$order['date_add']}</td>
+							<td class="left">{$order['payment']}</td>
+							<td class="left">{$order['order_state']}</td>
+							<td align="right">{$order['nb_products']}</td>
+							<td align="right">{$order['total_paid_real']}</td>
+							<td align="center"><a href="?tab=AdminOrders&id_order={$order['id_order']}&vieworder&token={getAdminToken tab='AdminOrders'}"><img src="../img/admin/details.gif" /></a></td>
+						</tr>
 						{/foreach}
 					</table>
 					<h3 style="color:red;font-weight:normal;">{l s='Invalid orders:' mod='germanext'} {$count_ko}</h3>
@@ -239,7 +240,7 @@
 		{/if}
 	</div>
 
-	{if isset($PS_PSTATISTIC) && $PS_PSTATISTIC == 1 && isset($customer->statistic) && $customer->statistic == 1}
+	{if ((isset($PS_PSTATISTIC) && $PS_PSTATISTIC == 1 && isset($customer->statistic) && $customer->statistic == 1) || (isset($GN_FORCE_STAT_GATHER) && $GN_FORCE_STAT_GATHER == 1))}
 	<div style="float:left;width:50%">
 		<div style="margin-left:15px;">
 			<h2>{l s='Carts' mod='germanext'} ({count($carts)})</h2>
@@ -277,7 +278,7 @@
 	<div class="clear">&nbsp;</div>	
 	{/if}
 
-	{if isset($PS_PSTATISTIC) && $PS_PSTATISTIC == 1 && isset($customer->statistic) && $customer->statistic == 1 && $products && count($products)}
+	{if ((isset($PS_PSTATISTIC) && $PS_PSTATISTIC == 1 && isset($customer->statistic) && $customer->statistic == 1) || (isset($GN_FORCE_STAT_GATHER) && $GN_FORCE_STAT_GATHER == 1)) && $products && count($products)}
 	<div class="clear">&nbsp;</div>
 		<h2>{l s='Products:' mod='germanext'} ({count($products)})</h2>
 		<table cellspacing="0" cellpadding="0" class="table" style="width:100%;">
@@ -385,7 +386,7 @@
 
 	<div class="clear">&nbsp;</div>
 	
-	{if isset($PS_PSTATISTIC) && $PS_PSTATISTIC == 1 && isset($customer->statistic) && $customer->statistic == 1}
+	{if ((isset($PS_PSTATISTIC) && $PS_PSTATISTIC == 1 && isset($customer->statistic) && $customer->statistic == 1) || (isset($GN_FORCE_STAT_GATHER) && $GN_FORCE_STAT_GATHER == 1))}
 	
 	{if count($interested)}
 		<div>
@@ -411,7 +412,7 @@
 	<div class="clear">&nbsp;</div>
 	<div style="float:left;width:50%">
 		{* Last connections *}
-		{if isset($PS_PSTATISTIC) && $PS_PSTATISTIC == 1 && isset($customer->statistic) && $customer->statistic == 1 && count($connections)}
+		{if ((isset($PS_PSTATISTIC) && $PS_PSTATISTIC == 1 && isset($customer->statistic) && $customer->statistic == 1) || (isset($GN_FORCE_STAT_GATHER) && $GN_FORCE_STAT_GATHER == 1)) && count($connections)}
 			<h2>{l s='Last connections' mod='germanext'}</h2>
 			<table cellspacing="0" cellpadding="0" class="table" style="width:100%;">
 					<colgroup>
