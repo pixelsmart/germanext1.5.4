@@ -758,7 +758,7 @@ class Germanext extends Module
 		$gn_configs['CMS_SHIPPING_LINK'] = $CMS_SHIPPING_LINK;
 		$gn_configs['USTG'] = self::ustgInstalledAndActive();
 
-		if (is_object($context)) {
+		if (is_object($this->context)) {
 			$this->context->controller->addCSS($this->_path . 'css/style.css', 'all');
 			$this->context->smarty->assign('germanext_tpl', GN_THEME_PATH);
 			$this->context->smarty->assign('germanext_tpl_mobile', GN_THEME_PATH . 'mobile/');
