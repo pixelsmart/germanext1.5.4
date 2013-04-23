@@ -7,8 +7,8 @@ class TaxCalculator extends TaxCalculatorCore
 
 		foreach ($this->taxes as $tax) {
 			$prepared[$tax->id] = array(
-				'name'  => $tax->name[$id_lang],
-				'rate'  => $tax->rate
+				'name' => $tax->name[$id_lang],
+				'rate' => $tax->rate
 			);
 		}
 		
