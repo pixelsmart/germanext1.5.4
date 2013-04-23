@@ -21,11 +21,11 @@ class AuthController extends AuthControllerCore
 		$back = Tools::getValue('back');
 		$key = Tools::safeOutput(Tools::getValue('key'));
 
-		if (!empty($key)) {
+		if ( ! empty($key)) {
 			$back .= (strpos($back, '?') !== false ? '&' : '?').'key='.$key;
 		}
 
-		if (!empty($back)) {
+		if ( ! empty($back)) {
 			$this->context->smarty->assign('back', Tools::safeOutput($back));
 
 			if (strpos($back, 'order') !== false) {
@@ -73,7 +73,7 @@ class AuthController extends AuthControllerCore
 			));
 
 			$return = array(
-				'hasError' => !empty($this->errors),
+				'hasError' => ! empty($this->errors),
 				'errors' => $this->errors,
 				'page' => $this->context->smarty->fetch((defined('GN_THEME_PATH') ? GN_THEME_PATH : _PS_THEME_DIR_) . 'authentication.tpl'),
 				'token' => Tools::getToken(false)
