@@ -3,21 +3,16 @@ abstract class Controller extends ControllerCore
 {
 	public function setTemplate($template)
 	{
-        if (Module::isInstalled('germanext'))
-        {
-            if ( ! class_exists('germanext', false))
-            {
-                require_once(_PS_MODULE_DIR_ . 'germanext/germanext.php');
-            }
+		if (Module::isInstalled('germanext')) {
+			require_once(_PS_MODULE_DIR_ . 'germanext/germanext.php');
             
-            $gn_template = Germanext::getTemplateByController(get_class($this), $template);
-        }
-        
+			$gn_template = Germanext::getTemplateByController(get_class($this), $template);
+		}
+
 		$this->template = (isset($gn_template) && $gn_template) ? $gn_template : $template;
 	}
 	
-	public static function getGermanextFilePath($path)
-	{
+	public static function getGermanextFilePath($path) {
 		require_once(_PS_MODULE_DIR_ . 'germanext/defines.php');
 
 		$gn_path = false;
@@ -38,24 +33,19 @@ abstract class Controller extends ControllerCore
 		return ($gn_path && file_exists($gn_path)) ? $gn_path_rel : $path;
 	}
 	
-	public function addCSS($css_uri, $css_media_type = 'all')
-	{
+	public function addCSS($css_uri, $css_media_type = 'all') {
 		$css_override = array();
 		
-		if (is_array($css_uri))
-		{
-			foreach ($css_uri as $file => $media)
-			{
-				if (is_string($file))
-				{
+		if (is_array($css_uri)) {
+			foreach ($css_uri as $file => $media) {
+				if (is_string($file)) {
 					$file = self::getGermanextFilePath($file);
 					
 					$css_override[$file] = $media;
 				}
 			}
 		}
-		else if (is_string($css_uri) && strlen($css_uri) > 1)
-		{
+		else if (is_string($css_uri) && strlen($css_uri) > 1) {
 			$file = self::getGermanextFilePath($css_uri);
 					
 			$css_override[$file] = $css_media_type;
@@ -64,17 +54,13 @@ abstract class Controller extends ControllerCore
 		parent::addCSS($css_override, $css_media_type);
 	}
 	
-	public function addJS($js_uri)
-	{
-		if (is_array($js_uri))
-		{
-			foreach ($js_uri as &$js_file)
-			{
+	public function addJS($js_uri) {
+		if (is_array($js_uri)) {
+			foreach ($js_uri as &$js_file) {
 				$js_file = self::getGermanextFilePath($js_file);
 			}
 		}
-		else
-		{
+		else {
 			$js_uri = self::getGermanextFilePath($js_uri);
 		}
 		
