@@ -1,22 +1,22 @@
 <?php
 class AdminCustomersController extends AdminCustomersControllerCore {
-  public function renderForm()
-	{
-		if (!($obj = $this->loadObject(true)))
+	public function renderForm() {
+		if ( ! ($obj = $this->loadObject(true))) {
 			return;
+		}
 
 		$genders = Gender::getGenders();
 		$list_genders = array();
-		foreach ($genders as $key => $gender)
-		{
+		
+		foreach ($genders as $key => $gender) {
 			$list_genders[$key]['id'] = 'gender_'.$gender->id;
 			$list_genders[$key]['value'] = $gender->id;
 			$list_genders[$key]['label'] = $gender->name;
 		}
 
-		$years = Tools::dateYears();
+		$years  = Tools::dateYears();
 		$months = Tools::dateMonths();
-		$days = Tools::dateDays();
+		$days   = Tools::dateDays();
 		
 		$groups = Group::getGroups($this->default_form_language, true);
 		$this->fields_form = array(
@@ -162,55 +162,57 @@ class AdminCustomersController extends AdminCustomersControllerCore {
 		);
 
 		// if we add a customer via fancybox (ajax), it's a customer and he doesn't need to be added to the visitor and guest groups
-		if (Tools::isSubmit('addcustomer') && Tools::isSubmit('submitFormAjax'))
-		{
+		if (Tools::isSubmit('addcustomer') && Tools::isSubmit('submitFormAjax')) {
 			$visitor_group = Configuration::get('PS_UNIDENTIFIED_GROUP');
 			$guest_group = Configuration::get('PS_GUEST_GROUP');
-			foreach ($groups as $key => $g)
-				if (in_array($g['id_group'], array($visitor_group, $guest_group)))
+			foreach ($groups as $key => $g) {
+				if (in_array($g['id_group'], array($visitor_group, $guest_group))) {
 					unset($groups[$key]);
+				}
+			}
 		}
 
-		$this->fields_form['input'] = array_merge($this->fields_form['input'],
+		$this->fields_form['input'] = array_merge(
+			$this->fields_form['input'],
+			array(
 				array(
-					array(
-								'type' => 'group',
-								'label' => $this->l('Group access:'),
-								'name' => 'groupBox',
-								'values' => $groups,
-								'required' => true,
-								'desc' => $this->l('Select all the groups that you would like to apply to this customer.')
-							),
-					array(
-						'type' => 'select',
-						'label' => $this->l('Default customer group:'),
-						'name' => 'id_default_group',
-						'options' => array(
-							'query' => $groups,
-							'id' => 'id_group',
-							'name' => 'name'
-						),
-						'hint' => $this->l('The group will be as applied by default.'),
-						'desc' => $this->l('Apply the discount\'s price of this group.')
-						)
-					)
-				);
+					'type' => 'group',
+					'label' => $this->l('Group access:'),
+					'name' => 'groupBox',
+					'values' => $groups,
+					'required' => true,
+					'desc' => $this->l('Select all the groups that you would like to apply to this customer.')
+				),
+				array(
+					'type' => 'select',
+					'label' => $this->l('Default customer group:'),
+					'name' => 'id_default_group',
+					'options' => array(
+						'query' => $groups,
+						'id' => 'id_group',
+						'name' => 'name'
+					),
+					'hint' => $this->l('The group will be as applied by default.'),
+					'desc' => $this->l('Apply the discount\'s price of this group.')
+				)
+			)
+		);
 
 		// if customer is a guest customer, password hasn't to be there
-		if ($obj->id && ($obj->is_guest && $obj->id_default_group == Configuration::get('PS_GUEST_GROUP')))
-		{
-			foreach ($this->fields_form['input'] as $k => $field)
-				if ($field['type'] == 'password')
+		if ($obj->id && ($obj->is_guest && $obj->id_default_group == Configuration::get('PS_GUEST_GROUP'))) {
+			foreach ($this->fields_form['input'] as $k => $field) {
+				if ($field['type'] == 'password') {
 					array_splice($this->fields_form['input'], $k, 1);
+				}
+			}
 		}
 
-		if (Configuration::get('PS_B2B_ENABLE'))
-		{
+		if (Configuration::get('PS_B2B_ENABLE')) {
 			$risks = Risk::getRisks();
 
 			$list_risks = array();
-			foreach ($risks as $key => $risk)
-			{
+			
+			foreach ($risks as $key => $risk) {
 				$list_risks[$key]['id_risk'] = (int)$risk->id;
 				$list_risks[$key]['name'] = $risk->name;
 			}
@@ -221,24 +223,28 @@ class AdminCustomersController extends AdminCustomersControllerCore {
 				'name' => 'company',
 				'size' => 33
 			);
+			
 			$this->fields_form['input'][] = array(
 				'type' => 'text',
 				'label' => $this->l('SIRET:'),
 				'name' => 'siret',
 				'size' => 14
 			);
+			
 			$this->fields_form['input'][] = array(
 				'type' => 'text',
 				'label' => $this->l('APE:'),
 				'name' => 'ape',
 				'size' => 5
 			);
+			
 			$this->fields_form['input'][] = array(
 				'type' => 'text',
 				'label' => $this->l('Website:'),
 				'name' => 'website',
 				'size' => 33
 			);
+			
 			$this->fields_form['input'][] = array(
 				'type' => 'text',
 				'label' => $this->l('Outstanding allowed:'),
@@ -247,6 +253,7 @@ class AdminCustomersController extends AdminCustomersControllerCore {
 				'hint' => $this->l('Valid characters:').' 0-9',
 				'suffix' => '¤'
 			);
+			
 			$this->fields_form['input'][] = array(
 				'type' => 'text',
 				'label' => $this->l('Maximum number of payment days:'),
@@ -254,6 +261,7 @@ class AdminCustomersController extends AdminCustomersControllerCore {
 				'size' => 10,
 				'hint' => $this->l('Valid characters:').' 0-9'
 			);
+			
 			$this->fields_form['input'][] = array(
 				'type' => 'select',
 				'label' => $this->l('Risk:'),
@@ -282,25 +290,30 @@ class AdminCustomersController extends AdminCustomersControllerCore {
 		);
 
 		// Added values of object Group
-		if (!Validate::isUnsignedId($obj->id))
+		if ( ! Validate::isUnsignedId($obj->id)) {
 			$customer_groups = array();
-		else
+		}
+		else {
 			$customer_groups = $obj->getGroups();
+		}
+		
 		$customer_groups_ids = array();
-		if (is_array($customer_groups))
-			foreach ($customer_groups as $customer_group)
+		
+		if (is_array($customer_groups)) {
+			foreach ($customer_groups as $customer_group) {
 				$customer_groups_ids[] = $customer_group;
+			}
+		}
 
 		// if empty $carrier_groups_ids : object creation : we set the default groups
-		if (empty($customer_groups_ids))
-		{
+		if (empty($customer_groups_ids)) {
 			$preselected = array(Configuration::get('PS_UNIDENTIFIED_GROUP'), Configuration::get('PS_GUEST_GROUP'), Configuration::get('PS_CUSTOMER_GROUP'));
 			$customer_groups_ids = array_merge($customer_groups_ids, $preselected);
 		}
 
-		foreach ($groups as $group)
-			$this->fields_value['groupBox_'.$group['id_group']] =
-				Tools::getValue('groupBox_'.$group['id_group'], in_array($group['id_group'], $customer_groups_ids));
+		foreach ($groups as $group) {
+			$this->fields_value['groupBox_'.$group['id_group']] = Tools::getValue('groupBox_'.$group['id_group'], in_array($group['id_group'], $customer_groups_ids));
+		}
 
 		return AdminController::renderForm();
 	}
