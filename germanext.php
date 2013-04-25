@@ -1768,6 +1768,7 @@ class Germanext extends Module
 	* @return void
 	*/
 	public static function prepareMailSend(&$params) {
+		$context = Context::getContext();
 		$id_lang = (int)($params['id_lang']);
 		$iso = Language::getIsoById($id_lang);
 		$path = dirname(__FILE__) . '/mails/';
@@ -1807,13 +1808,13 @@ class Germanext extends Module
 				$footer_vars[$conf_name] = (array_key_exists($conf_name, $conf) && ! Tools::isEmpty($conf[$conf_name])) ? $conf[$conf_name] : '';
 			}
 			
-			$this->context->smarty->assign($footer_vars);
+			$context->smarty->assign($footer_vars);
 			
 			$file = $path . $iso . '/footer_html.tpl';
-			$params['templateVars']['{mail_footer_html}'] = (file_exists($file)) ? $this->context->smarty->fetch($file) : '';
+			$params['templateVars']['{mail_footer_html}'] = (file_exists($file)) ? $context->smarty->fetch($file) : '';
 			
 			$file = $path . $iso . '/footer_txt.tpl';
-			$params['templateVars']['{mail_footer_txt}']  = (file_exists($file)) ? $this->context->smarty->fetch($file) : '';
+			$params['templateVars']['{mail_footer_txt}']  = (file_exists($file)) ? $context->smarty->fetch($file) : '';
 			
 			$agbCmsKey = Configuration::get('GN_MAIL_CMS');
 			
