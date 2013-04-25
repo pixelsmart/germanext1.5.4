@@ -57,5 +57,3 @@
 {if isset($USTG) && $USTG}
 <p>{l s='According to § 19 and VAT is not displayed in the invoice.' mod='germanext'}</p>
 {/if}
-
-
