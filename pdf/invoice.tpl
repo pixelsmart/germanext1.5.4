@@ -39,21 +39,20 @@
 					<tr>
 						<td style="width: 50%">
 							<span style="font-weight: bold; font-size: 10pt; color: #9E9F9E">{l s='Delivery Address' mod='germanext'}</span><br />
-							 {$delivery_address}
+							{$delivery_address}
 						</td>
 						<td style="width: 50%">
 							<span style="font-weight: bold; font-size: 10pt; color: #9E9F9E">{l s='Billing Address' mod='germanext'}</span><br />
-							 {$invoice_address}
+							{$invoice_address}
 						</td>
 					</tr>
 				</table>
 			{else}
 				<table style="width: 100%">
 					<tr>
-
 						<td style="width: 50%">
 							<span style="font-weight: bold; font-size: 10pt; color: #9E9F9E">{l s='Billing & Delivery Address.' mod='germanext'}</span><br />
-							 {$invoice_address}
+							{$invoice_address}
 						</td>
 						<td style="width: 50%">
 
