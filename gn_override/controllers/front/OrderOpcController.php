@@ -303,9 +303,6 @@ class OrderOpcController extends OrderOpcControllerCore
 				}
 			}
 		}
-		elseif (Tools::isSubmit('ajax')) {
-			throw new PrestaShopException('Method is not defined');
-		}
 	}
     
 	public function getOrderHref($id_module = false) {
