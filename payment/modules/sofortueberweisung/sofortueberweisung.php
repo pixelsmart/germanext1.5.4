@@ -20,6 +20,6 @@ class gn_sofortueberweisung extends GN_PaymentManager
 
     public function callPayment($context)
     {
-        Tools::redirect($context->smarty->tpl_vars['base_dir_ssl']->value.'modules/sofortueberweisung/redirect.php');
+	Tools::redirect(__PS_BASE_URI__.'index.php?fc=module&module=sofortueberweisung&controller=redirect');
     }
 }
