@@ -514,7 +514,7 @@ product_tabs['Prices'] = new function(){
 	var self = this;
 	// Bind to show/hide new specific price form
 	this.toggleSpecificPrice = function (){
-		$('#show_specific_price').click(function()
+		$('#show_specific_price').unbind('click').click(function()
 		{
 			$('#add_specific_price').slideToggle();
 
@@ -525,7 +525,7 @@ product_tabs['Prices'] = new function(){
 			return false;
 		});
 
-		$('#hide_specific_price').click(function()
+		$('#hide_specific_price').unbind('click').click(function()
 		{
 			$('#add_specific_price').slideToggle();
 			$('#add_specific_price').find('input[name=submitPriceAddition]').remove();
