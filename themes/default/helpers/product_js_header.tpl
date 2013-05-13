@@ -104,7 +104,7 @@ var fieldRequired = '{l s='Please fill in all the required fields before saving 
 		specific_price_combination['reduction_type'] = '{if $combination.specific_price}{$combination.specific_price.reduction_type}{/if}';
 		available_date['date'] = '{$combination.available_date}';
 		available_date['date_formatted'] = '{dateFormat date=$combination.available_date full=false}';
-		addCombination({$idCombination|intval}, new Array({$combination.list}), {$combination.quantity}, {$combination.unit_net}, {$combination.price}, {$combination.ecotax}, {$combination.id_image}, '{$combination.reference|addslashes}', {$combination.unit_impact}, {$combination.net_impact}, {$combination.minimal_quantity}, '{$combination.available_date}', available_date, specific_price_combination, {$combination.weight});
+		addCombination({$idCombination|intval}, new Array({$combination.list}), {$combination.quantity}, {$combination.unit_net}, {$combination.price}, {$combination.ecotax}, {$combination.id_image}, '{$combination.reference|addslashes}', {$combination.unit_impact}, {$combination.net_impact}, {$combination.minimal_quantity}, available_date, specific_price_combination, {$combination.weight});
 	{/foreach}
 {/if}
 
