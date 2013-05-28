@@ -1558,7 +1558,7 @@ class Germanext extends Module
 				$template_path = str_replace(array('\\', '/'), DIRECTORY_SEPARATOR, $theme_path . $template);
 
 				if (file_exists($template_path)) {
-					return ! $is_admin ? $template_path : strstr((substr($template_path, 0, strlen(strrchr($template_path, '/')) * -1) . '/'), '/modules/germanext/');
+					return ! $is_admin ? $template_path : strstr((substr($template_path, 0, strlen(strrchr($template_path, '/')) * -1) . '/'), 'modules/germanext/');
 				}
 			}
 		}
