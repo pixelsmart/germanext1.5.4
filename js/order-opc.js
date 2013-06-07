@@ -24,10 +24,9 @@
  *  International Registered Trademark & Property of PrestaShop SA
  */
  
- var is_shipping_cart = false;
+var is_shipping_cart = false;
 
-function updateCarrierList(json)
-{
+function updateCarrierList(json) {
     var html = json.carrier_block;
 
     // @todo  check with theme 1.4
@@ -35,19 +34,47 @@ function updateCarrierList(json)
     //	html += json.HOOK_EXTRACARRIER;
 
     $('#carrier_area').replaceWith(html);
+    
     bindInputs();
     /* update hooks for carrier module */
     $('#HOOK_BEFORECARRIER').html(json.HOOK_BEFORECARRIER);
 }
 
-function updatePaymentMethods(json)
-{
+function updatePaymentMethods(json) {
     $('#HOOK_TOP_PAYMENT').html(json.HOOK_TOP_PAYMENT);
     $('#opc_payment_methods-content #HOOK_PAYMENT').html(json.HOOK_PAYMENT);
+    
+    linkOrderButtonHref(json);
 }
 
-function updateAddressSelection()
-{
+function updatePaymentMethodsDisplay() {
+	var checked = '';
+	
+	if ($('#cgv:checked').length !== 0) {
+		checked = 1;
+	}
+	else {
+		checked = 0;
+	}
+	
+	$('#opc_payment_methods-overlay').fadeIn('slow', function(){
+		$.ajax({
+			type: 'POST',
+			headers: { "cache-control": "no-cache" },
+			url: orderOpcUrl + '?rand=' + new Date().getTime(),
+			async: true,
+			cache: false,
+			dataType : "json",
+			data: 'ajax=true&method=updateTOSStatusAndGetPayments&checked=' + checked + '&token=' + static_token,
+			success: function(json) {
+				updatePaymentMethods(json);
+			}
+		});
+		$(this).fadeOut('slow');		
+	});
+}
+
+function updateAddressSelection() {
 	var idAddress_delivery = ($('#opc_id_address_delivery').length === 1 ? $('#opc_id_address_delivery').val() : $('#id_address_delivery').val());
 	var idAddress_invoice = ($('#opc_id_address_invoice').length === 1 ? $('#opc_id_address_invoice').val() : ($('#addressesAreEquals:checked').length === 1 ? idAddress_delivery : ($('#id_address_invoice').length === 1 ? $('#id_address_invoice').val() : idAddress_delivery)));
 
@@ -62,20 +89,17 @@ function updateAddressSelection()
         cache: false,
         dataType : "json",
         data: 'ajax=true&method=updateAddressesSelected&id_address_delivery=' + idAddress_delivery + '&id_address_invoice=' + idAddress_invoice + '&token=' + static_token,
-        success: function(jsonData)
-        {
-            if (jsonData.hasError)
-            {
-                var errors = '';
-                for(var error in jsonData.errors)
-                    //IE6 bug fix
-                    if(error !== 'indexOf')
-                        errors += jsonData.errors[error] + "\n";
-                alert(errors);
-            }
-            else
-            {
-                // Update all product keys with the new address id
+        success: function(jsonData) {
+            if (jsonData.hasError) {
+				var errors = '';
+				for(var error in jsonData.errors)
+					//IE6 bug fix
+					if(error !== 'indexOf')
+						errors += jsonData.errors[error] + "\n";
+				alert(errors);
+			}
+			else {
+				// Update all product keys with the new address id
                 $('#cart_summary .address_'+deliveryAddress).each(function() {
                     $(this)
                         .removeClass('address_'+deliveryAddress)
@@ -669,9 +693,10 @@ $(function() {
         });
     }
     
-    updateCarrierSelectionAndGift();
-
-    bindInputs();
+	if ( ! is_shipping_cart) {
+		updateCarrierSelectionAndGift();	
+		bindInputs();
+	}
 
     $('#opc_account_form input,select,textarea').change(function() {
         if ($(this).is(':visible'))
@@ -682,6 +707,27 @@ $(function() {
     });
 
 });
+
+function linkOrderButtonHref(json) {
+    if (typeof(json.BUTTON_ORDER_HREF) != 'undefined') {
+	var orderBtn = $('#button_order');
+	
+	if (orderBtn.length > 0) {
+	    if (json.BUTTON_ORDER_HREF == null) {
+		orderBtn.bind('click', function(evt){
+		    evt.preventDefault();
+		    
+		    confirmFreeOrder();
+		    
+		    return false;
+		});
+	    }
+	    else {
+		orderBtn.attr('href', json.BUTTON_ORDER_HREF);
+	    }
+	}
+    }
+}
 
 function bindInputs()
 {
