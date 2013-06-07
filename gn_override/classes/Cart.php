@@ -364,7 +364,9 @@ class Cart extends CartCore
 		}
 		
 		foreach ($prepared_taxes as &$tax) {
-			$tax['percentage'] = 100 / ($total_products_price / $tax['total_vat']);
+			if ($total_products_price > 0 && $tax['total_vat'] > 0) {
+				$tax['percentage'] = 100 / ($total_products_price / $tax['total_vat']);	
+			}
 		}
 		
 		return sizeof($prepared_taxes) ? $prepared_taxes : false;
