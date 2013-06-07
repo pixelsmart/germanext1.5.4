@@ -13,7 +13,7 @@ class OrderOpcController extends OrderOpcControllerCore
 		ParentOrderController::init();
 
 		if ($this->nbProducts) {
-			$this->context->smarty->assign('virtual_cart', false);
+			$this->context->smarty->assign('virtual_cart', $this->context->cart->isVirtualCart());
 		}
 		
 		$this->context->smarty->assign('is_multi_address_delivery', $this->context->cart->isMultiAddressDelivery() || ((int)Tools::getValue('multi-shipping') == 1));
@@ -100,7 +100,8 @@ class OrderOpcController extends OrderOpcControllerCore
 										'HOOK_TOP_PAYMENT'   => Hook::exec('displayPaymentTop'),
 										'HOOK_PAYMENT'       => $this->presentPaymentHook(),
 										'carrier_data'       => $this->_getCarrierList(),
-										'HOOK_BEFORECARRIER' => Hook::exec('displayBeforeCarrier', array('carriers' => $carriers))
+										'HOOK_BEFORECARRIER' => Hook::exec('displayBeforeCarrier', array('carriers' => $carriers)),
+										'BUTTON_ORDER_HREF'  => $this->getOrderHref()
 									);
 									
 									Cart::addExtraCarriers($return);
@@ -122,8 +123,9 @@ class OrderOpcController extends OrderOpcControllerCore
 							if (Tools::isSubmit('checked')) {
 								$this->context->cookie->checkedTOS = (int)(Tools::getValue('checked'));
 								die(Tools::jsonEncode(array(
-									'HOOK_TOP_PAYMENT' => Hook::exec('displayPaymentTop'),
-									'HOOK_PAYMENT' => $this->presentPaymentHook()
+									'HOOK_TOP_PAYMENT'  => Hook::exec('displayPaymentTop'),
+									'HOOK_PAYMENT'      => $this->presentPaymentHook(),
+									'BUTTON_ORDER_HREF' => $this->getOrderHref()
 								)));
 							}
 							break;
@@ -307,6 +309,10 @@ class OrderOpcController extends OrderOpcControllerCore
     
 	public function getOrderHref($id_module = false) {
 		$id_module = $id_module ? $id_module : $this->context->cart->id_payment;
+		
+		if ($this->context->cart->getOrderTotal() <= 0) {
+			$id_module = 0;
+		}
 
 		if ((int)$id_module != 0) {
 			return $this->context->link->getPageLink('order-opc.php', true, null, array('callOrder' => true, 'payment_module' => $id_module));
@@ -413,47 +419,52 @@ class OrderOpcController extends OrderOpcControllerCore
 			return parent::_getPaymentMethods();
 		}
         
-		require_once(_PS_MODULE_DIR_ . 'germanext/payment/manager.php');
-
-		$error = $this->_checkPaymentError(false);
-		
-		if ($error) {
-			return $error;
+        	if ($this->context->cart->getOrderTotal() <= 0) {
+			return '<p class="warning">' . Tools::displayError('No payment method is required for free orders') . '</p>';
 		}
+		else {
+			require_once(_PS_MODULE_DIR_ . 'germanext/payment/manager.php');
 
-		$paymentCost = new PaymentCost();
-		$paymentList = $paymentCost->getPaymentList();
-      
-		$modules = array();
+			$error = $this->_checkPaymentError(false);
 		
-		foreach ($paymentList as $payment) {
-			$id_payment = (int)$payment['id_payment'];
+			if ($error) {
+				return $error;
+			}
+
+			$paymentCost = new PaymentCost();
+			$paymentList = $paymentCost->getPaymentList();
+      
+			$modules = array();
+		
+			foreach ($paymentList as $payment) {
+				$id_payment = (int)$payment['id_payment'];
 			
-			$instance = GN_PaymentManager::getPaymentInstance($id_payment);
+				$instance = GN_PaymentManager::getPaymentInstance($id_payment);
 		   
-			$result = $instance->presentPayment($id_payment);
+				$result = $instance->presentPayment($id_payment);
 		   
-			if ($result !== false) {
-				if ( ! is_array($result)) {
-					$result = array($result);
-				}
+				if ($result !== false) {
+					if ( ! is_array($result)) {
+						$result = array($result);
+					}
 					
-				foreach ($result as $method) {
-					$modules[] = array('id' => $id_payment, 'content' => $method);
+					foreach ($result as $method) {
+						$modules[] = array('id' => $id_payment, 'content' => $method);
+					}
 				}
 			}
+		
+			$HOOK_PAYMENT = '';
+		
+			if (sizeof($modules) > 0) {
+				$this->context->smarty->assign(array('PAYMENT_METHOD_LIST_ONLY'=> $modules, 'current_id_payment' => $this->context->cart->id_payment));
+				$GN = new Germanext();
+				$HOOK_PAYMENT = $this->context->smarty->fetch(GN_THEME_PATH . 'order-payment.tpl');
+				$this->context->smarty->assign(array('PAYMENT_METHOD_LIST_ONLY'=> 0));
+			}
+			
+			return $HOOK_PAYMENT;
 		}
-		
-		$HOOK_PAYMENT = '';
-		
-		if (sizeof($modules) > 0) {
-			$this->context->smarty->assign(array('PAYMENT_METHOD_LIST_ONLY'=> $modules, 'current_id_payment' => $this->context->cart->id_payment));
-			$GN = new Germanext();
-			$HOOK_PAYMENT = $this->context->smarty->fetch(GN_THEME_PATH . 'order-payment.tpl');
-			$this->context->smarty->assign(array('PAYMENT_METHOD_LIST_ONLY'=> 0));
-		}
-		
-		return $HOOK_PAYMENT;
 	}
 	
 	protected function _getCarrierList() {
@@ -461,6 +472,8 @@ class OrderOpcController extends OrderOpcControllerCore
 	
 		if (is_array($result) && array_key_exists('carrier_block', $result) && Module::isInstalled('germanext')) {
 			require_once(_PS_MODULE_DIR_ . 'germanext/defines.php');
+			
+			$this->context->smarty->assign('virtual_cart', $this->context->cart->isVirtualCart());
 			
 			$result['carrier_block'] = $this->context->smarty->fetch(GN_THEME_PATH . 'order-carrier.tpl');
 		}
