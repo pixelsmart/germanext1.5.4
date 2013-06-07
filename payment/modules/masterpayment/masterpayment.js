@@ -66,7 +66,6 @@ function setHrefQueryVar(variable, newValue, hrefAttr)
 $(document).ready(function(){
     $('input[name=payment_module]').click(function(){
         var that = $(this);
-        
         $('#opc_payment_methods-overlay').ajaxStop(function(){
             var content = that.next('label'),
                 paymentOptionInput = content.find('.masterpaymentOptions'),

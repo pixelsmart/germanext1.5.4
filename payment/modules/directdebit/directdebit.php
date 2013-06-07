@@ -21,15 +21,19 @@ class gn_directdebit extends GN_PaymentManager
 
     }
 
-    public function ajaxDataPrompt($context)
+    public function ajaxDataPrompt()
     {
-        return $context->smarty->fetch(dirname(__FILE__) . '/payment.tpl');
+        global $cookie, $cart, $smarty;
+
+        return $smarty->fetch(dirname(__FILE__) . '/payment.tpl');
     }
 
-    public function callPayment($context)
+    public function callPayment($params)
     {
-        if ( ! isset($context->cookie->id_currency))
-            $context->cookie->id_currency = $context->cart->id_currency;
+        global $cookie, $cart;
+
+        if ( ! isset($cookie->id_currency))
+            $cookie->id_currency = $cart->id_currency;
 
         $getStr = '&';
 
@@ -39,7 +43,10 @@ class gn_directdebit extends GN_PaymentManager
 
         $getStr = rtrim($getStr, '&');
 
-        Tools::redirect($context->link->getModuleLink('directdebit', 'payment', array(), true).'&paymentSubmit=1' . (strlen($getStr) > 1 ? $getStr : null));
+        $context = Context::getContext();
+		//print_r($context);
+		//echo $context->link->getModuleLink('directdebit', 'payment', array(), true); exit;
+		Tools::redirect(Tools::getShopDomain(true, true).__PS_BASE_URI__.'index.php?fc=module&module=directdebit&controller=payment&paymentSubmit=1' . (strlen($getStr) > 1 ? $getStr : null));
 
 
         return false;

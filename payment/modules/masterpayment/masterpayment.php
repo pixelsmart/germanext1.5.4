@@ -136,10 +136,11 @@ class gn_masterpayment extends GN_PaymentManager
 
         $context->smarty->assign('params', $api->getParams());
 
+        Tools::addCSS(__PS_BASE_URI__.'modules/masterpayment/views/css/gateway.css');
         include(dirname(__FILE__) . '/../../../../../header.php');
 
         if (in_array($currency->iso_code, $valid_currencies)) {
-            Tools::addCSS(__PS_BASE_URI__.'modules/masterpayment/views/css/gateway.css');
+
             echo '<form action="'.$cfg['MP_GATEWAY_URL'].'" method="post" name="masterpayment" '.(($cfg['MP_MODE'] == 'iframe')?'target="masterpayment_gateway_iframe"':'').'>';
             foreach ($api->getParams() as $name => $value) {
                      echo '<input type="hidden" name="'.$name.'" value="'.$value.'" />';
@@ -161,7 +162,8 @@ class gn_masterpayment extends GN_PaymentManager
                   </p>';
         }
 
-		include(dirname(__FILE__) . '/../../../../../footer.php');
+		include(dirname(__FILE__) . '/../../../../../footer.php'); exit;
+
 	}
 
     public function collectPaymentData()
