@@ -441,7 +441,7 @@
         {if $ONLY_SHIPPING_CART}
             <a id="button_order" href="{$link->getPageLink('order.php', true)}" class="exclusive" title="{l s='Order' mod='germanext'}">{l s='Order' mod='germanext'}</a>
         {elseif $opc}
-            <a href="{$BUTTON_ORDER_HREF}" id="button_order" class="{if ! $PS_CONDITIONS}exclusive_large{else}button_large exclusive disabled{/if}">{l s='Purchase products' mod='germanext'}</a>
+            <a href="{if isset($BUTTON_ORDER_HREF)}{$BUTTON_ORDER_HREF}{else}#{/if}" id="button_order" class="{if ! $PS_CONDITIONS}exclusive_large{else}button_large exclusive disabled{/if}">{l s='Purchase products' mod='germanext'}</a>
         {else}
 			<a href="{if $back}{$link->getPageLink('order', true, NULL, 'step=1&amp;back={$back}')}{else}{$link->getPageLink('order', true, NULL, 'step=1')}{/if}" class="exclusive standard-checkout" title="{l s='Next'}">{l s='Next'} &raquo;</a>
 			{if Configuration::get('PS_ALLOW_MULTISHIPPING')}
