@@ -97,6 +97,7 @@
 <div class="order_carrier_content">
 
 {if $virtual_cart}
+	<p class="warning">{l s='No carrier needed for this order' mod='germanext'}</p>
 	<input id="input_virtual_carrier" class="hidden" type="hidden" name="id_carrier" value="0" />
 {else}
 	<h3 class="carrier_title">{l s='Choose your delivery method' mod='germanext'}</h3>
