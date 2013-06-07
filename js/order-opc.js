@@ -723,7 +723,7 @@ function linkOrderButtonHref(json) {
 		});
 	    }
 	    else {
-		orderBtn.attr('href', json.BUTTON_ORDER_HREF);
+		orderBtn.unbind('click').click(function(){return processOrderButtonClick($(this));}).attr('href', json.BUTTON_ORDER_HREF);
 	    }
 	}
     }
@@ -988,35 +988,42 @@ if (typeof(window.bindInputs) != 'undefined')
 		$('#button_order').live('click', function(evt){
 			evt.preventDefault();
 			
-			if ( ! isLogged && ! is_shipping_cart) {
-				alert(notLoggedIn);
-				return false;
-			}
-            
-			if ($(this).is('.disabled'))
-			{
-				alert(txtTOSIsNotAccepted);
-				return false;
-			}
-
-			var paymentModule = getHrefQueryVar('payment_module', $(this).attr('href'))
-			doRedirect = true;
-
-			if (paymentModule)
-			{
-				var moduleForm = $(document).find('form#submitPayment_' + parseInt(paymentModule));
-
-				if (moduleForm.length > 0)
-				{
-					doRedirect = false;
-					moduleForm.trigger('submit');
-				}
-			}
-
-			if (doRedirect)
-				window.location = $(this).attr('href');
+			return processOrderButtonClick($(this));
 		});
 	}
+}
+
+function processOrderButtonClick(btn) {
+    if ( ! isLogged && ! is_shipping_cart) {
+	alert(notLoggedIn);
+	return false;
+    }
+
+    if ($(this).is('.disabled'))
+    {
+	alert(txtTOSIsNotAccepted);
+	return false;
+    }
+
+    var paymentModule = getHrefQueryVar('payment_module', btn.attr('href'))
+    doRedirect = true;
+
+    if (paymentModule)
+    {
+	var moduleForm = $(document).find('form#submitPayment_' + parseInt(paymentModule));
+
+	if (moduleForm.length > 0)
+	{
+	    doRedirect = false;
+	    moduleForm.trigger('submit');
+	}
+    }
+
+    if (doRedirect) {
+	window.location = btn.attr('href');
+    }
+    
+    return true;
 }
 
 function updatePaymentModuleFee()
