@@ -165,8 +165,8 @@ $(document).ready(function() {
 				</p>
 				<p class="submit">
 					{if isset($back)}<input type="hidden" class="hidden" name="back" value="{$back|escape:'htmlall':'UTF-8'}" />{/if}
-					<input type="submit" id="SubmitCreate" name="SubmitCreate" class="button_large" value="{l s='Create an account'}" />
-					<input type="hidden" class="hidden" name="SubmitCreate" value="{l s='Create an account'}" />
+					<input type="submit" id="SubmitCreate" name="SubmitCreate" class="button_large" value="{l s='Create an account' mod='germanext'}" />
+					<input type="hidden" class="hidden" name="SubmitCreate" value="{l s='Create an account' mod='germanext'}" />
 				</p>
 			</div>
 		</fieldset>
@@ -606,4 +606,3 @@ $(document).ready(function() {
 
 </form>
 {/if}
-
