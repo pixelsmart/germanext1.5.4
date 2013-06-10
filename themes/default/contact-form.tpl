@@ -34,7 +34,7 @@
 		<li><a href="{$base_dir}"><img class="icon" alt="" src="{$img_dir}icon/home.gif"/></a><a href="{$base_dir}">{l s='Home' mod='germanext'}</a></li>
 	</ul>
 {elseif isset($alreadySent)}
-	<p>{l s='Your message has already been sent.'}</p>
+	<p>{l s='Your message has already been sent.' mod='germanext'}</p>
 	<ul class="footer_links">
 		<li><a href="{$base_dir}"><img class="icon" alt="" src="{$img_dir}icon/home.gif"/></a><a href="{$base_dir}">{l s='Home' mod='germanext'}</a></li>
 	</ul>
