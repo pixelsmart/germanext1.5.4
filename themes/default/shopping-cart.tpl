@@ -210,11 +210,11 @@
 			{/if}
 
 			<tr class="cart_total_price">
-				<td colspan="5">{l s='Total (tax excl.):'}</td>
+				<td colspan="5">{l s='Total (tax excl.):' mod='germanext'}</td>
 				<td colspan="2" class="price" id="total_price_without_tax">{displayPrice price=$total_price_without_tax}</td>
 			</tr>
 			<tr class="cart_total_tax">
-				<td colspan="5">{l s='Total tax:'}</td>
+				<td colspan="5">{l s='Total tax:' mod='germanext'}</td>
 				<td colspan="2" class="price" id="total_tax">{displayPrice price=$total_tax}</td>
 			</tr>
 			<tr class="cart_total_price">
@@ -229,15 +229,15 @@
 					{/if}
 					<form action="{if $opc}{$link->getPageLink('order-opc.php', true, NULL, "add&amp;shipping_cart=1")}{else}{$link->getPageLink('order.php', true, NULL, "add&amp;shipping_cart=1")}{/if}" method="post" id="voucher">
 						<fieldset>
-							<p class="title_block"><label for="discount_name">{l s='Vouchers'}</label></p>
+							<p class="title_block"><label for="discount_name">{l s='Vouchers' mod='germanext'}</label></p>
 							<p>
 								<input type="text" class="discount_name" id="discount_name" name="discount_name" value="{if isset($discount_name) && $discount_name}{$discount_name}{/if}" />
 							</p>
-							<p class="submit"><input type="hidden" name="submitDiscount" /><input type="submit" name="submitAddDiscount" value="{l s='OK'}" class="button" /></p>
+							<p class="submit"><input type="hidden" name="submitDiscount" /><input type="submit" name="submitAddDiscount" value="{l s='OK' mod='germanext'}" class="button" /></p>
 						</fieldset>
 					</form>
 					{if $displayVouchers}
-						<p id="title" class="title_offers">{l s='Take advantage of our offers:'}</p>
+						<p id="title" class="title_offers">{l s='Take advantage of our offers:' mod='germanext'}</p>
 						<div id="display_cart_vouchers">
 						{foreach $displayVouchers as $voucher}
 							{if $voucher.code != ''}<span onclick="$('#discount_name').val('{$voucher.code}');return false;" class="voucher_name">{$voucher.code}</span> - {/if}{$voucher.name}<br />
@@ -248,12 +248,12 @@
 				</td>
 				{if $use_taxes}
 				<td colspan="2" class="price total_price_container" id="total_price_container">
-					<p>{l s='Total:'}</p>
+					<p>{l s='Total:' mod='germanext'}</p>
 					<span id="total_price">{displayPrice price=$total_price}</span>
 				</td>
 				{else}
 				<td colspan="2" class="price total_price_container" id="total_price_container">
-					<p>{l s='Total:'}</p>
+					<p>{l s='Total:' mod='germanext'}</p>
 					<span id="total_price">{displayPrice price=$total_price_without_tax}</span>
 				</td>
 				{/if}
@@ -286,9 +286,9 @@
 												{if $textField.name}
 													{$textField.name}
 												{else}
-													{l s='Text #'}{$textField@index+1}
+													{l s='Text #' mod='germanext'}{$textField@index+1}
 												{/if}
-												{l s=':'} {$textField.value}
+												{l s=':' mod='germanext'} {$textField.value}
 											</li>
 										{/foreach}
 										
@@ -302,14 +302,14 @@
 								<span style="float:left">{if $quantityDisplayed == 0 AND isset($customizedDatas.$productId.$productAttributeId)}{$customizedDatas.$productId.$productAttributeId|@count}{else}{$product.cart_quantity-$quantityDisplayed}{/if}</span>
 							{else}
 								<div class="cart_quantity_button">
-								<a rel="nofollow" class="cart_quantity_up" id="cart_quantity_up_{$product.id_product}_{$product.id_product_attribute}_{$id_customization}_{$product.id_address_delivery|intval}" href="{$link->getPageLink('cart', true, NULL, "add&amp;id_product={$product.id_product|intval}&amp;ipa={$product.id_product_attribute|intval}&amp;id_address_delivery={$product.id_address_delivery}&amp;id_customization={$id_customization}&amp;token={$token_cart}")}" title="{l s='Add'}"><img src="{$img_dir}icon/quantity_up.gif" alt="{l s='Add'}" width="14" height="9" /></a><br />
+								<a rel="nofollow" class="cart_quantity_up" id="cart_quantity_up_{$product.id_product}_{$product.id_product_attribute}_{$id_customization}_{$product.id_address_delivery|intval}" href="{$link->getPageLink('cart', true, NULL, "add&amp;id_product={$product.id_product|intval}&amp;ipa={$product.id_product_attribute|intval}&amp;id_address_delivery={$product.id_address_delivery}&amp;id_customization={$id_customization}&amp;token={$token_cart}")}" title="{l s='Add' mod='germanext'}"><img src="{$img_dir}icon/quantity_up.gif" alt="{l s='Add' mod='germanext'}" width="14" height="9" /></a><br />
 								{if $product.minimal_quantity < ($customization.quantity -$quantityDisplayed) OR $product.minimal_quantity <= 1}
-								<a rel="nofollow" class="cart_quantity_down" id="cart_quantity_down_{$product.id_product}_{$product.id_product_attribute}_{$id_customization}_{$product.id_address_delivery|intval}" href="{$link->getPageLink('cart', true, NULL, "add&amp;id_product={$product.id_product|intval}&amp;ipa={$product.id_product_attribute|intval}&amp;id_address_delivery={$product.id_address_delivery}&amp;id_customization={$id_customization}&amp;op=down&amp;token={$token_cart}")}" title="{l s='Subtract'}">
-									<img src="{$img_dir}icon/quantity_down.gif" alt="{l s='Subtract'}" width="14" height="9" />
+								<a rel="nofollow" class="cart_quantity_down" id="cart_quantity_down_{$product.id_product}_{$product.id_product_attribute}_{$id_customization}_{$product.id_address_delivery|intval}" href="{$link->getPageLink('cart', true, NULL, "add&amp;id_product={$product.id_product|intval}&amp;ipa={$product.id_product_attribute|intval}&amp;id_address_delivery={$product.id_address_delivery}&amp;id_customization={$id_customization}&amp;op=down&amp;token={$token_cart}")}" title="{l s='Subtract' mod='germanext'}">
+									<img src="{$img_dir}icon/quantity_down.gif" alt="{l s='Subtract' mod='germanext'}" width="14" height="9" />
 								</a>
 								{else}
-								<a class="cart_quantity_down" style="opacity: 0.3;" id="cart_quantity_down_{$product.id_product}_{$product.id_product_attribute}_{$id_customization}" href="#" title="{l s='Subtract'}">
-									<img src="{$img_dir}icon/quantity_down.gif" alt="{l s='Subtract'}" width="14" height="9" />
+								<a class="cart_quantity_down" style="opacity: 0.3;" id="cart_quantity_down_{$product.id_product}_{$product.id_product_attribute}_{$id_customization}" href="#" title="{l s='Subtract' mod='germanext'}">
+									<img src="{$img_dir}icon/quantity_down.gif" alt="{l s='Subtract' mod='germanext'}" width="14" height="9" />
 								</a>
 								{/if}
 								</div>
@@ -321,7 +321,7 @@
 							{if isset($cannotModify) AND $cannotModify == 1}
 							{else}
 								<div>
-									<a rel="nofollow" class="cart_quantity_delete" id="{$product.id_product}_{$product.id_product_attribute}_{$id_customization}_{$product.id_address_delivery|intval}" href="{$link->getPageLink('cart', true, NULL, "delete&amp;id_product={$product.id_product|intval}&amp;ipa={$product.id_product_attribute|intval}&amp;id_customization={$id_customization}&amp;id_address_delivery={$product.id_address_delivery}&amp;token={$token_cart}")}">{l s='Delete'}</a>
+									<a rel="nofollow" class="cart_quantity_delete" id="{$product.id_product}_{$product.id_product_attribute}_{$id_customization}_{$product.id_address_delivery|intval}" href="{$link->getPageLink('cart', true, NULL, "delete&amp;id_product={$product.id_product|intval}&amp;ipa={$product.id_product_attribute|intval}&amp;id_customization={$id_customization}&amp;id_address_delivery={$product.id_address_delivery}&amp;token={$token_cart}")}">{l s='Delete' mod='germanext'}</a>
 								</div>
 							{/if}
 						</td>
@@ -346,7 +346,7 @@
 					<span class="price-discount price">{if !$priceDisplay}{displayPrice price=$discount.value_real*-1}{else}{displayPrice price=$discount.value_tax_exc*-1}{/if}</span>
 				</td>
 				<td class="price_discount_del">
-					<a href="{if $opc}{$link->getPageLink('order-opc', true)}{else}{$link->getPageLink('order', true)}{/if}?deleteDiscount={$discount.id_discount}" class="price_discount_delete" title="{l s='Delete'}">{l s='Delete'}</a>
+					<a href="{if $opc}{$link->getPageLink('order-opc', true)}{else}{$link->getPageLink('order', true)}{/if}?deleteDiscount={$discount.id_discount}" class="price_discount_delete" title="{l s='Delete' mod='germanext'}">{l s='Delete' mod='germanext'}</a>
 				</td>
 			</tr>
 		{/foreach}
@@ -358,14 +358,14 @@
 {if $show_option_allow_separate_package}
 <p>
 	<input type="checkbox" name="allow_seperated_package" id="allow_seperated_package" {if $cart->allow_seperated_package}checked="checked"{/if} />
-	<label for="allow_seperated_package">{l s='Send the available products first'}</label>
+	<label for="allow_seperated_package">{l s='Send the available products first' mod='germanext'}</label>
 </p>
 {/if}
 {if !$opc}
 	{if Configuration::get('PS_ALLOW_MULTISHIPPING')}
 		<p>
 			<input type="checkbox" {if $multi_shipping}checked="checked"{/if} id="enable-multishipping" />
-			<label for="enable-multishipping">{l s='I want to specify a delivery address for each individual product.'}</label>
+			<label for="enable-multishipping">{l s='I want to specify a delivery address for each individual product.' mod='germanext'}</label>
 		</p>
 	{/if}
 {/if}
@@ -395,7 +395,7 @@
 	{if !isset($formattedAddresses)}
 	{if $delivery->id}
 	<ul id="delivery_address" class="address item">
-		<li class="address_title">{l s='Delivery address'}</li>
+		<li class="address_title">{l s='Delivery address' mod='germanext'}</li>
 		{if $delivery->company}<li class="address_company">{$delivery->company|escape:'htmlall':'UTF-8'}</li>{/if}
 		<li class="address_name">{$delivery->firstname|escape:'htmlall':'UTF-8'} {$delivery->lastname|escape:'htmlall':'UTF-8'}</li>
 		<li class="address_address1">{$delivery->address1|escape:'htmlall':'UTF-8'}</li>
@@ -406,7 +406,7 @@
 	{/if}
 	{if $invoice->id}
 	<ul id="invoice_address" class="address alternate_item">
-		<li class="address_title">{l s='Invoice address'}</li>
+		<li class="address_title">{l s='Invoice address' mod='germanext'}</li>
 		{if $invoice->company}<li class="address_company">{$invoice->company|escape:'htmlall':'UTF-8'}</li>{/if}
 		<li class="address_name">{$invoice->firstname|escape:'htmlall':'UTF-8'} {$invoice->lastname|escape:'htmlall':'UTF-8'}</li>
 		<li class="address_address1">{$invoice->address1|escape:'htmlall':'UTF-8'}</li>
@@ -437,22 +437,22 @@
 {/if}
 {if isset($GN_CHECK_PAYMENT) && $GN_CHECK_PAYMENT}
     <p class="cart_navigation">
-        <a href="{if (isset($smarty.server.HTTP_REFERER) && strstr($smarty.server.HTTP_REFERER, 'order.php')) || !isset($smarty.server.HTTP_REFERER)}{$link->getPageLink('index.php')}{else}{$smarty.server.HTTP_REFERER|escape:'htmlall':'UTF-8'|secureReferrer}{/if}" class="button_large" title="{l s='Continue shopping'}">&laquo; {l s='Continue shopping'}</a>
+        <a href="{if (isset($smarty.server.HTTP_REFERER) && strstr($smarty.server.HTTP_REFERER, 'order.php')) || !isset($smarty.server.HTTP_REFERER)}{$link->getPageLink('index.php')}{else}{$smarty.server.HTTP_REFERER|escape:'htmlall':'UTF-8'|secureReferrer}{/if}" class="button_large" title="{l s='Continue shopping' mod='germanext'}">&laquo; {l s='Continue shopping' mod='germanext'}</a>
         {if $ONLY_SHIPPING_CART}
             <a id="button_order" href="{$link->getPageLink('order.php', true)}" class="exclusive" title="{l s='Order' mod='germanext'}">{l s='Order' mod='germanext'}</a>
         {elseif $opc}
             <a href="{if isset($BUTTON_ORDER_HREF)}{$BUTTON_ORDER_HREF}{else}#{/if}" id="button_order" class="{if ! $PS_CONDITIONS}exclusive_large{else}button_large exclusive disabled{/if}">{l s='Purchase products' mod='germanext'}</a>
         {else}
-			<a href="{if $back}{$link->getPageLink('order', true, NULL, 'step=1&amp;back={$back}')}{else}{$link->getPageLink('order', true, NULL, 'step=1')}{/if}" class="exclusive standard-checkout" title="{l s='Next'}">{l s='Next'} &raquo;</a>
+			<a href="{if $back}{$link->getPageLink('order', true, NULL, 'step=1&amp;back={$back}')}{else}{$link->getPageLink('order', true, NULL, 'step=1')}{/if}" class="exclusive standard-checkout" title="{l s='Next' mod='germanext'}">{l s='Next' mod='germanext'} &raquo;</a>
 			{if Configuration::get('PS_ALLOW_MULTISHIPPING')}
-				<a href="{if $back}{$link->getPageLink('order', true, NULL, 'step=1&amp;back={$back}')}{else}{$link->getPageLink('order', true, NULL, 'step=1')}{/if}&amp;multi-shipping=1" class="multishipping-button multishipping-checkout exclusive" title="{l s='Next'}">{l s='Next'} &raquo;</a>
+				<a href="{if $back}{$link->getPageLink('order', true, NULL, 'step=1&amp;back={$back}')}{else}{$link->getPageLink('order', true, NULL, 'step=1')}{/if}&amp;multi-shipping=1" class="multishipping-button multishipping-checkout exclusive" title="{l s='Next' mod='germanext'}">{l s='Next' mod='germanext'} &raquo;</a>
 			{/if}
 		{/if}
     </p>
 {else}
     <p class="cart_navigation">
         {if $ONLY_SHIPPING_CART}
-            <a href="{if (isset($smarty.server.HTTP_REFERER) && strstr($smarty.server.HTTP_REFERER, 'order.php')) || !isset($smarty.server.HTTP_REFERER)}{$link->getPageLink('index.php')}{else}{$smarty.server.HTTP_REFERER|escape:'htmlall':'UTF-8'|secureReferrer}{/if}" class="button_large" title="{l s='Continue shopping'}">&laquo; {l s='Continue shopping'}</a>
+            <a href="{if (isset($smarty.server.HTTP_REFERER) && strstr($smarty.server.HTTP_REFERER, 'order.php')) || !isset($smarty.server.HTTP_REFERER)}{$link->getPageLink('index.php')}{else}{$smarty.server.HTTP_REFERER|escape:'htmlall':'UTF-8'|secureReferrer}{/if}" class="button_large" title="{l s='Continue shopping' mod='germanext'}">&laquo; {l s='Continue shopping' mod='germanext'}</a>
             <a id="button_order" href="{$link->getPageLink('order.php', true)}" class="exclusive" title="{l s='Order' mod='germanext'}">{l s='Order' mod='germanext'}</a>
         {/if}
     </p>
@@ -464,4 +464,3 @@
 	<span id="HOOK_SHOPPING_CART_EXTRA">{$HOOK_SHOPPING_CART_EXTRA}</span>
 </p>
 {/if}
-
