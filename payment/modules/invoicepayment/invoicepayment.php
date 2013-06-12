@@ -30,7 +30,7 @@ class gn_invoicepayment extends GN_PaymentManager
 				$context->cookie->id_currency = $context->cart->id_currency;
 			}
 
-			Tools::redirect($context->link->getModuleLink('invoicepayment', 'validation', array(), true).'&confirm=1');
+			Tools::redirect($context->link->getModuleLink('invoicepayment', 'validation', array('confirm' => 1), true));
 		}
 		
 		return false;
