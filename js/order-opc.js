@@ -1092,6 +1092,7 @@ function updatePaymentModuleFee()
 					
                     //alert ('ass');
                     $('#button_order').attr('href', json.BUTTON_ORDER_HREF);
+                    linkOrderButtonHref(json);
                     updateCartSummary(json.summary);
 					
 					if ( ! hasOwnTemplate)
