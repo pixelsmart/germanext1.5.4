@@ -2,7 +2,7 @@
 /**
  * germanext Module
  *
- * @version 1.5 ** ONLY FOR PRESTASHOP VERSION 1.5 **
+ * @version 1.5.4 ** ONLY FOR PRESTASHOP VERSION 1.5.4 **
  *
  * @category  German Extension
  * @author    George June <j.june@silbersaiten.de>
@@ -54,6 +54,7 @@ class Germanext extends Module
 		$this->tab     = 'administration';
 		$this->version = '1.5.4';
 		$this->author  = 'Silbersaiten';
+		$this->module_key  = '868714cc747beb201e773f592f29e6b3';
         
 		parent::__construct();
         
