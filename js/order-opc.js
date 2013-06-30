@@ -999,7 +999,7 @@ function processOrderButtonClick(btn) {
 	return false;
     }
 
-    if ($(this).is('.disabled'))
+    if (btn.is('.disabled'))
     {
 	alert(txtTOSIsNotAccepted);
 	return false;

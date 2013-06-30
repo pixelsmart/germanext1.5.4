@@ -370,9 +370,9 @@
 	{/if}
 {/if}
 
-{if $ONLY_SHIPPING_CART}
+
 <div id="HOOK_SHOPPING_CART">{$HOOK_SHOPPING_CART}</div>
-{/if}
+
 
 {* Define the style if it doesn't exist in the PrestaShop version*}
 {* Will be deleted for 1.5 version and more *}

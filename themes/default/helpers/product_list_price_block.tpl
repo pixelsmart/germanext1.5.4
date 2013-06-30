@@ -15,7 +15,7 @@
 		<div class="gn_adds gn_unitprice">({convertPrice price=$unit_price} {l s='per' mod='germanext'} {$product.unity})</div>
 		{/if}
 		
-		{if $tax_enabled && isset($display_tax_label) && $display_tax_label}
+		{if Configuration::get('PS_TAX') && isset($display_tax_label) && $display_tax_label}
 		<div class="gn_adds gn_tax">
 		   <div class="gn_adds gn_tax">{l s='tax incl.' mod='germanext'} ({str_replace('.', ',', (string)((float)($product.rate)))}{l s='%' mod='germanext'})</div>
 		</div>
