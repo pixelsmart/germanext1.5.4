@@ -24,7 +24,7 @@ class gn_directdebit extends GN_PaymentManager
     public function ajaxDataPrompt()
     {
         global $cookie, $cart, $smarty;
-
+        $smarty->assign('total', $cart->getOrderTotal(true, Cart::BOTH) );
         return $smarty->fetch(dirname(__FILE__) . '/payment.tpl');
     }
 
