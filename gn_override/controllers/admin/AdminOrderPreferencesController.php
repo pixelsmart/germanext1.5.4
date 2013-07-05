@@ -34,15 +34,6 @@ class AdminOrderPreferencesController extends AdminOrderPreferencesControllerCor
 				'title' =>	$this->l('General'),
 				'icon' =>	'tab-preferences',
 				'fields' =>	array(
-					'PS_ORDER_PROCESS_TYPE' => array(
-						'title' => $this->l('Order process type'),
-						'desc' => $this->l('Please choose either the five-step, or one-page, checkout process.'),
-						'validation' => 'isInt',
-						'cast' => 'intval',
-						'type' => 'select',
-						'list' => $order_process_type,
-						'identifier' => 'value'
-					),
 					'PS_GUEST_CHECKOUT_ENABLED' => array(
 						'title' => $this->l('Enable guest checkout'),
 						'desc' => $this->l('Guests can place an order without registering'),
