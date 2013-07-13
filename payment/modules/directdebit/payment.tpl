@@ -92,6 +92,6 @@
     <div class="warning">{l s='Please fill in either both Holder and Code data, or both the IBAN and BIC data' mod='germanext'}</div>
 
     <div class="text">
-        {l s='Please confirm your payment of ' mod='directdebit'} <strong>{convertPriceWithCurrency price=$total currency=$currency}</strong> {l s=' by clicking \'Submit Order\'' mod='germanext'}.
+        {l s='Please confirm your payment of ' mod='germanext'} <strong>{convertPriceWithCurrency price=$total currency=$currency}</strong> {l s=' by clicking \'Submit Order\'' mod='germanext'}.
     </div>
 </div>
