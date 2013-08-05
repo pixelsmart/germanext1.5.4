@@ -210,9 +210,7 @@
 						<option value="-1">{l s='Reduction' mod='germanext'}</option>
 					</select>
 					<span id="span_net_impact">&nbsp;&nbsp;{l s='of' mod='germanext'}&nbsp;&nbsp;&nbsp;&nbsp;
-						{if $currency->format % 2 != 0} {$currency->sign} {/if}
-						<input type="text" size="6" name="attribute_net" id="attribute_net" value="0.00" onKeyUp="if (isArrowKey(event)) return ;this.value = this.value.replace(/,/g, '.');" />
-						{if $currency->format % 2 == 0} {$currency->sign}{/if} / 
+						<input type="text" size="6" name="attribute_net" id="attribute_net" value="0.00" onKeyUp="if (isArrowKey(event)) return ;this.value = this.value.replace(/,/g, '.');" /> 
 						<span id="unity_third">{$field_value_unity}</span>
 					</span>
 				</td>
