@@ -17,7 +17,14 @@
 		
 		{if Configuration::get('PS_TAX') && isset($display_tax_label) && $display_tax_label}
 		<div class="gn_adds gn_tax">
-		   <div class="gn_adds gn_tax">{l s='tax incl.' mod='germanext'} ({str_replace('.', ',', (string)((float)($product.rate)))}{l s='%' mod='germanext'})</div>
+		    <div class="gn_adds gn_tax">
+		    {if !$priceDisplay}
+		    {l s='tax incl.' mod='germanext'} 
+		    {else}
+		    {l s='tax excl.' mod='germanext'} 
+		    {/if}
+		    ({str_replace('.', ',', (string)((float)($product.rate)))}{l s='%' mod='germanext'})
+		    </div>
 		</div>
 		{/if}		
 		{if isset($CMS_SHIPPING_LINK) && $CMS_SHIPPING_LINK}
