@@ -436,7 +436,7 @@ function updateDisplay()
 			
 		$('#pretaxe_price_display').text(formatCurrency(productPricePretaxed, currencyFormat, currencySign, currencyBlank));
 		// Unit price 
-		$('#unit_price_display').text(formatCurrency(productPrice / selectedCombination['unit_net'], currencyFormat, currencySign, currencyBlank));
+		$('#unit_price_display').text(formatCurrency(productPriceDisplay / selectedCombination['unit_net'], currencyFormat, currencySign, currencyBlank));
 
 		// Ecotax
 		var ecotaxAmount = !displayPrice ? ps_round(selectedCombination['ecotax'] * (1 + ecotaxTax_rate / 100), 2) : selectedCombination['ecotax'];
