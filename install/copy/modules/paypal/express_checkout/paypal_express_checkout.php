@@ -250,6 +250,7 @@ class PaypalExpressCheckout extends Paypal
 		$this->setProductsList($fields, $index, $total, $taxes);
 		$this->setDiscountsList($fields, $index, $total, $taxes);
 		$this->setGiftWrapping($fields, $index, $total);
+		$this->setPaymentFees($fields, $index, $total);
 
 		// Payment values
 		$this->setPaymentValues($fields, $total, $taxes);
@@ -327,6 +328,19 @@ class PaypalExpressCheckout extends Paypal
 			$fields['L_PAYMENTREQUEST_0_QTY'.$index] = 1;
 
 			$total = Tools::ps_round($total + $gift_wrapping_price, $this->decimals);
+		}
+	}
+	
+	private function setPaymentFees(&$fields, &$index, &$total) 	{
+		if (property_exists($this->context->cart, 'id_payment')) {
+			$payment_fees = $this->context->cart->getOrderTotal(true, cart::ONLY_PAYMENT);
+
+			$fields['L_PAYMENTREQUEST_0_NAME'.++$index]	= $this->l('Payment Fees');
+
+			$fields['L_PAYMENTREQUEST_0_AMT'.$index] = Tools::ps_round($payment_fees, $this->decimals);
+			$fields['L_PAYMENTREQUEST_0_QTY'.$index] = 1;
+
+			$total = Tools::ps_round($total + $payment_fees, $this->decimals);
 		}
 	}
 
