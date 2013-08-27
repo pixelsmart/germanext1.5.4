@@ -30,7 +30,7 @@
 		<td style="width: 80%">
 			{if $tax_exempt}
 				{l s='Exempt of VAT according section 259B of the General Tax Code.' mod='germanext'}
-			{else if (count($tax_details) == 0)}
+			{else if ! $tax_details || (count($tax_details) == 0)}
 					{l s='No tax' mod='germanext'}
 			{else}
 			<table style="width: 70%" >
