@@ -5,3 +5,4 @@
 #new_account_form fieldset { background: none!important; }
 
 tfoot, table#cart_summary tr.cart_item.odd, table#cart_summary tr.cart_total_delivery, table#cart_summary tr.cart_total_price, table#cart_summary tr.cart_total_voucher { background-color: #f3f3f3!important; }
+#product .gn_block { display: block; clear: both; }
