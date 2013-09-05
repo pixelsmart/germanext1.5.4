@@ -461,6 +461,6 @@
 <p class="clear"><br /><br /></p>
 <div class="clear"></div>
 <p class="cart_navigation_extra">
-	<span id="HOOK_SHOPPING_CART_EXTRA">{$HOOK_SHOPPING_CART_EXTRA}</span>
+	<div id="HOOK_SHOPPING_CART_EXTRA">{$HOOK_SHOPPING_CART_EXTRA}</div>
 </p>
 {/if}
