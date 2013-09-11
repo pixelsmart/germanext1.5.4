@@ -44,8 +44,8 @@
 	<form action="{$request_uri|escape:'htmlall':'UTF-8'}" method="post" class="std" enctype="multipart/form-data">
 		<fieldset>
 			<h3>{l s='send a message' mod='germanext'}</h3>
-			<p class="required select">
-				<label for="id_contact">{l s='Subject Heading' mod='germanext'} </sup>*</sup></label> 
+			<p class="select">
+				<label for="id_contact">{l s='Subject Heading' mod='germanext'} <sup class="required">*</sup></label> 
 			{if isset($customerThread.id_contact)}
 				{foreach from=$contacts item=contact}
 					{if $contact.id_contact == $customerThread.id_contact}
@@ -69,8 +69,8 @@
 					</p>
 				{/foreach}
 			{/if}
-			<p class="required text">
-				<label for="email">{l s='Email address' mod='germanext'} <sup>*</sup></label>
+			<p class="text">
+				<label for="email">{l s='Email address' mod='germanext'} <sup class="required">*</sup></label>
 				{if isset($customerThread.email)}
 					<input type="text" id="email" name="from" value="{$customerThread.email|escape:'htmlall':'UTF-8'}" readonly="readonly" />
 				{else}
@@ -120,10 +120,11 @@
 				<input type="file" name="fileUpload" id="fileUpload" />
 			</p>
 		{/if}
-		<p class="required textarea">
-			<label for="message">{l s='Message' mod='germanext'} <sup>*</sup></label>
+		<p class="textarea">
+			<label for="message">{l s='Message' mod='germanext'} <sup class="required">*</sup></label>
 			 <textarea id="message" name="message" rows="15" cols="10">{if isset($message)}{$message|escape:'htmlall':'UTF-8'|stripslashes}{/if}</textarea>
 		</p>
+	        <p class="textarea"><label> </label><sup class="required">*</sup> = {l s='Required fields' mod="germanext"}</p>
 		<p class="submit">
 			<input type="submit" name="submitMessage" id="submitMessage" value="{l s='Send' mod='germanext'}" class="button_large" onclick="$(this).hide();" />
 		</p>
