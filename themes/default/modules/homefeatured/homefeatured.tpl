@@ -95,7 +95,7 @@
 					</div>
 					<div>
 
-						<a class="lnk_more" href="{$product.link}" title="{l s='View' mod='germanext'}">{l s='View' mod='germanext'}</a>
+						<a class="button lnk_more" href="{$product.link}" title="{l s='View' mod='germanext'}">{l s='View' mod='germanext'}</a>
 						
 						{if ($product.id_product_attribute == 0 OR (isset($add_prod_display) AND ($add_prod_display == 1))) AND $product.available_for_order AND !isset($restricted_country_mode) AND $product.minimal_quantity == 1 AND $product.customizable != 2 AND !$PS_CATALOG_MODE}
 							{if ($product.quantity > 0 OR $product.allow_oosp)}
