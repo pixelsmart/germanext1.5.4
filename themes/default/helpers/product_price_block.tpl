@@ -61,22 +61,6 @@
     </p>
     {/if}
 
-    {if $product->specificPrice AND $product->specificPrice.reduction}
-    <p id="old_price">
-	<label>{l s='Old price' mod='germanext'}</label>
-        <span class="bold">
-        {if $priceDisplay >= 0 && $priceDisplay <= 2}
-            {if $productPriceWithoutReduction > $productPrice}
-            <span id="old_price_display">{convertPrice price=$productPriceWithoutReduction}</span>
-            <!-- {if $tax_enabled && $display_tax_label == 1}
-                {if $priceDisplay == 1}{l s='tax excl.' mod='germanext'}{else}{l s='tax incl.' mod='germanext'}{/if}
-            {/if} -->
-            {/if}
-        {/if}
-        </span>
-    </p>
-    {/if}
-    
     {if $packItems|@count && $productPrice < $product->getNoPackPrice()}
     <p class="pack_price">{l s='instead of' mod='germanext'} <span style="text-decoration: line-through;">{convertPrice price=$product->getNoPackPrice()}</span></p>
     <br class="clear" />
@@ -114,5 +98,22 @@
 		<div class="gn_adds gn_ustg">{l s='According to paragraph 19 and VAT is not displayed in the invoice' mod='germanext'}</div>
 		{/if}
 	</div>
+
+    {if $product->specificPrice AND $product->specificPrice.reduction}
+    <p id="old_price">
+	<label>{l s='Old price' mod='germanext'}</label>
+        <span class="bold">
+        {if $priceDisplay >= 0 && $priceDisplay <= 2}
+            {if $productPriceWithoutReduction > $productPrice}
+            <span id="old_price_display">{convertPrice price=$productPriceWithoutReduction}</span>
+            <!-- {if $tax_enabled && $display_tax_label == 1}
+                {if $priceDisplay == 1}{l s='tax excl.' mod='germanext'}{else}{l s='tax incl.' mod='germanext'}{/if}
+            {/if} -->
+            {/if}
+        {/if}
+        </span>
+    </p>
+    {/if}
+
 {*close if for show price*}
 {/if}
