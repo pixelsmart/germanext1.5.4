@@ -20,7 +20,13 @@ $_gn_queries = array(
     'base_unit' =>
         'CREATE TABLE IF NOT EXISTS `%PREFIX%base_unit` (
             `id_base_unit` INT(10) unsigned NOT NULL AUTO_INCREMENT,
-            `name` VARCHAR(12) NOT NULL,
             PRIMARY KEY (`id_base_unit`)
-        )  ENGINE=%ENGINE% DEFAULT CHARSET=utf8;'
+        )  ENGINE=%ENGINE% DEFAULT CHARSET=utf8;',
+	
+    'base_unit_lang' => 
+        'CREATE TABLE IF NOT EXISTS `%PREFIX%base_unit_lang` (
+            `id_base_unit` INT(10) NOT NULL,
+            `id_lang` INT(10) NOT NULL,
+            `name` VARCHAR(12) NOT NULL
+        ) ENGINE=%ENGINE% DEFAULT CHARSET=utf8;',
 );
