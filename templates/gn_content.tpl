@@ -1,9 +1,32 @@
 {literal}
-<style type="text/css">
-   table.table { background: #fff; color: #000;}
-   .gn_flag { float: left; margin: 4px 0 0 4px;}
-   .linktxt { color: #000099; text-decoration: underline }
-</style>
+<script type="text/javascript">
+   $(function(){
+      $('.gn_flag').click(function(){
+	 if ($(this).parent('.translatable').hasClass('opened')) {
+	    var langString = $('.gn_lang_str'),
+	       currentString = $('.gn_lang_str_' + $(this).attr('rel')),
+	       flagsToHide = $('.gn_flag').not($(this));
+	    
+	    if ($(this).parent('.translatable').hasClass('base_units')) {
+	       langString = $(this).parents('.base_unit_block').find('.gn_lang_str'),
+	       currentString = $(this).parents('.base_unit_block').find('.gn_lang_str_' + $(this).attr('rel')),
+	       flagsToHide = $(this).parents('.base_unit_block').find('.gn_flag').not($(this));
+	    }
+
+	    langString.hide();
+	    
+	    currentString.show();
+	    
+	    flagsToHide.hide();
+	    
+	    $(this).parent('.translatable').removeClass('opened');
+	 }
+	 else {
+	    $(this).parent('.translatable').addClass('opened').find('.gn_flag').show();
+	 }
+      });
+   });
+</script>
 {/literal}
 
 
@@ -52,10 +75,10 @@
                   <th>{l s='Payment mods' mod='germanext'}</th>
                   <th>{l s='Impact on order value' mod='germanext'}</th>
                   <th>{l s='Title' mod='germanext'}
-                     <div style="float: right;">
+                     <div style="float: right;" class="translatable">
                         {foreach from=$GN_LANGUAGES item=lang}
-                        <div class="gn_flag" id="gn_flag_{$lang.id_lang}" style="display: {if $lang.id_lang==$GN_LANG_DEFAULT}block{else}none{/if};">
-                           <img alt="{$lang.name}" src="../img/l/{$lang.id_lang}.jpg" style="margin: 0pt 2px;" class="pointer" onclick="gnChangeLang({$lang.id_lang});">
+                        <div class="gn_flag" id="gn_flag_{$lang.id_lang}" rel="{$lang.id_lang}" style="display: {if $lang.id_lang==$GN_LANG_DEFAULT}block{else}none{/if};">
+                           <img alt="{$lang.name}" src="../img/l/{$lang.id_lang}.jpg" style="margin: 0pt 2px;" class="pointer" />
                         </div>
                         {/foreach}
                      </div>
