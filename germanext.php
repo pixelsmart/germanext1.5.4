@@ -890,7 +890,7 @@ class Germanext extends Module
 			'avNowFlags'      => $this->displayFlags($languages, $langDefault, 'available_now', 'available_now', true),
 			'avLaterFlags'    => $this->displayFlags($languages, $langDefault, 'available_later', 'available_later', true),
 			'regTextFlags'    => $this->displayFlags($languages, $langDefault, 'registration_text', 'registration_text', true),
-			'base_units'      => self::getBaseUnits()
+			'base_units'      => self::getBaseUnitsForEdit()
 		));
 
 		require_once(GN_PAYMENT_PATH . 'manager.php');
@@ -1017,28 +1017,47 @@ class Germanext extends Module
 		$existing_units  = array();
 		$units_to_delete = array();
 		$db_base_units   = self::getBaseUnits();
+		$new_index       = 0;
+		$default_lang    = Configuration::get('PS_LANG_DEFAULT');
 		
 		foreach ($units as $unit) {
 			$id_base_unit = (int)key($unit);
 			$name         = $unit[$id_base_unit];
-
-			if ( ! Tools::isEmpty($name)) {
-				if ( ! Validate::isGenericName($name)) {
-					$this->_postErrors[] = '"' . $name . '" ' . $this->l('is not a proper base unit');
+			
+			if ( ! array_filter($name)) {
+				continue;
+			}
+			
+			foreach ($name as $id_lang => $lang_name) {
+				if (Tools::isEmpty($lang_name) && $id_lang == $default_lang) {
+					$this->_postErrors[] = $this->l('Missing translation for one of the base units in default language');
 				}
-				else {
-					if ($id_base_unit > 0) {
-						$existing_units[$id_base_unit] = array(
-							'id_base_unit' => $id_base_unit,
-							'name'         => $name,
-						);
+				
+				if ( ! Tools::isEmpty($name)) {
+					if ( ! Validate::isGenericName($lang_name)) {
+						$this->_postErrors[] = '"' . $lang_name . '" ' . $this->l('is not a proper base unit');
 					}
 					else {
-						array_push($new_units, array(
-							'name'        => $name
-						));
+						if ($id_base_unit > 0) {
+							if ( ! array_key_exists($id_base_unit, $existing_units)) {
+								$existing_units[$id_base_unit] = array();
+							}
+							
+							$existing_units[$id_base_unit][$id_lang] = $lang_name;
+						}
+						else {
+							if ( ! array_key_exists($new_index, $new_units)) {
+								$new_units[$new_index] = array();
+							}
+							
+							$new_units[$new_index][$id_lang] = $lang_name;
+						}
 					}
 				}
+			}
+
+			if ($id_base_unit == 0) {
+				$new_index++;
 			}
 		}
 		
@@ -1062,13 +1081,23 @@ class Germanext extends Module
 			
 			if (sizeof($new_units)) {
 				foreach ($new_units as $new_unit) {
-					Db::getInstance()->autoExecute(_DB_PREFIX_ . 'base_unit', $new_unit, 'INSERT');
+					$default_name = $new_unit[$default_lang];
+					
+					if (Db::getInstance()->Execute('INSERT INTO `' . _DB_PREFIX_ . 'base_unit` (`id_base_unit`) VALUES (NULL)') && $new_base_unit = Db::getInstance()->Insert_ID()) {
+						foreach ($new_unit as $id_lang => $lang_name) {
+							Db::getInstance()->Execute('INSERT INTO `' . _DB_PREFIX_ . 'base_unit_lang` (`id_base_unit`, `id_lang`, `name`) VALUES (' . (int)$new_base_unit . ', ' . (int)$id_lang . ', "' . pSQL((Tools::isEmpty($lang_name) ? $default_name : $lang_name)) . '")');
+						}
+					}
 				}
 			}
 			
 			if (sizeof($existing_units)) {
-				foreach ($existing_units as $existing_unit) {
-					Db::getInstance()->autoExecute(_DB_PREFIX_ . 'base_unit', $existing_unit, 'UPDATE', '`id_base_unit` = ' . (int)$existing_unit['id_base_unit']);
+				foreach ($existing_units as $id_base_unit => $existing_unit) {
+					$default_name = $existing_unit[$default_lang];
+					
+					foreach ($existing_unit as $id_lang => $lang_name) {
+						Db::getInstance()->Execute('UPDATE `' . _DB_PREFIX_ . 'base_unit_lang`  SET `name` = "' . pSQL((Tools::isEmpty($lang_name) ? $default_name : $lang_name)) . '" WHERE `id_base_unit` = ' . (int)$id_base_unit . ' AND `id_lang` = ' . (int)$id_lang);
+					}
 				}
 			}
 			
@@ -1511,13 +1540,56 @@ class Germanext extends Module
 	*
 	* @return bool
 	*/
-	public static function getBaseUnits() {
+	public static function getBaseUnitsForEdit() {
 		$prepared = array();
 		$base_units = Db::getInstance()->ExecuteS('
 			SELECT
-				*
+				a.*,
+				b.`name`,
+				b.`id_lang` 
 			FROM
-				`' . _DB_PREFIX_ . 'base_unit`'
+				`' . _DB_PREFIX_ . 'base_unit` a
+			LEFT JOIN
+				`' . _DB_PREFIX_ . 'base_unit_lang` b ON (a.`id_base_unit` = b.`id_base_unit`)
+			ORDER BY `id_base_unit`'
+		);
+		
+		if ($base_units && sizeof($base_units)) {
+			foreach ($base_units as $base_unit) {
+				if ( ! array_key_exists($base_unit['id_base_unit'], $prepared)) {
+					$prepared[$base_unit['id_base_unit']] = array(
+						'id_base_unit' => $base_unit['id_base_unit'],
+						'name' => array(
+							$base_unit['id_lang'] => $base_unit['name']
+						)
+					);
+				}
+				else {
+					$prepared[$base_unit['id_base_unit']]['name'][$base_unit['id_lang']] = $base_unit['name'];
+				}
+			}
+			
+			return $prepared;
+		}
+		
+		return false;
+	}
+	
+	public static function getBaseUnits($id_lang = false) {
+		if ( ! $id_lang) {
+			$id_lang = Context::getContext()->language->id;
+		}
+		
+		$prepared = array();
+		$base_units = Db::getInstance()->ExecuteS('
+			SELECT
+				a.*,
+				b.`name`
+			FROM
+				`' . _DB_PREFIX_ . 'base_unit` a
+			LEFT JOIN
+				`' . _DB_PREFIX_ . 'base_unit_lang` b ON (a.`id_base_unit` = b.`id_base_unit` AND b.`id_lang` = ' . $id_lang . ')
+			ORDER BY `id_base_unit`'
 		);
 		
 		if ($base_units && sizeof($base_units)) {
@@ -1531,14 +1603,18 @@ class Germanext extends Module
 		return false;
 	}
 	
-	public static function getBaseUnitById($id) {
+	public static function getBaseUnitById($id, $id_lang = false) {
+		if ( ! $id_lang) {
+			$id_lang = Context::getContext()->language->id;
+		}
+		
 		return Db::getInstance()->getValue('
 			SELECT
 				`name`
 			FROM
-				`' . _DB_PREFIX_ . 'base_unit`
+				`' . _DB_PREFIX_ . 'base_unit_lang`
 			WHERE
-				`id_base_unit` = ' . (int)$id
+				`id_base_unit` = ' . (int)$id . ' AND `id_lang` = ' . (int)$id_lang
 		);
 	}
 	
