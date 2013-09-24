@@ -97,7 +97,6 @@ class Germanext extends Module
 		if ( ! (
 			parent::install()
 			&& $this->registerHook('header')
-			&& $this->registerHook('displayBackOfficeHeader')
 			&& $this->registerHook('actionProductAttributeUpdate')
 		)) {
 			$this->uninstall();
@@ -785,52 +784,6 @@ class Germanext extends Module
 	
 	protected function setGnRelativePath() {
 		$this->_path = GN_REL_PATH;
-	}
-	
-	
-	/*
-	* Initiated in <header> tag in Back Office.
-	*
-	* @access public
-	*
-	* @param array $params - Prestashop's parameters
-	*
-	* @return bool
-	*/
-	public function hookDisplayBackOfficeHeader($params) {
-		if (is_object($this->context)) {
-			// We might need those configs in smarty to use later in templates
-			// in Back office (these are Germanext config variables, so they
-			// aren't loaded by default)
-			$gn_configs = Configuration::getMultiple(array(
-				'GN_FORCE_STAT_GATHER',
-				'PS_PSTATISTIC',
-				'PS_ORDER_PROCESS_TYPE',
-				'PS_CONDITIONS',
-				'PS_CMS_ID_CONDITIONS',
-				'PS_CMS_ID_REVOCATION',
-				'PS_PRIVACY',
-				'PS_CMS_ID_PRIVACY',
-				'PS_CMS_ID_DELIVERY',
-				'PS_CMS_ID_IMPRINT'
-			));
-			
-			$gn_configs['USTG'] = self::ustgInstalledAndActive();
-			
-			$this->context->smarty->assign($gn_configs);
-			
-			// Germanext doesn't use the following code itself, but it might be
-			// useful in the future: you can create a folder with a controller
-			// name in modules/germanext/js/%CONTROLLER_NAME%/ and put js files
-			// there - they will be appended to <header> on page load.
-			$js_files = self::checkControllerJs(get_class($this->context->controller));
-
-			if ($js_files && sizeof($js_files)) {
-				foreach ($js_files as $js_file) {
-					$this->context->controller->addJS($this->_path . $js_file);
-				}
-			}
-		}
 	}
 	
 	
