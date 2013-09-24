@@ -1,6 +1,27 @@
 <?php
 class AdminController extends AdminControllerCore
 {
+	public function setMedia() {
+		parent::setMedia();
+
+		$gn_configs = Configuration::getMultiple(array(
+			'GN_FORCE_STAT_GATHER',
+			'PS_PSTATISTIC',
+			'PS_ORDER_PROCESS_TYPE',
+			'PS_CONDITIONS',
+			'PS_CMS_ID_CONDITIONS',
+			'PS_CMS_ID_REVOCATION',
+			'PS_PRIVACY',
+			'PS_CMS_ID_PRIVACY',
+			'PS_CMS_ID_DELIVERY',
+			'PS_CMS_ID_IMPRINT'
+		));
+
+		$gn_configs['USTG'] = (Module::isInstalled('smallscaleenterprise') && (int)Configuration::get('USTG_ACTIVE') == 1);
+
+		$this->context->smarty->assign($gn_configs);
+	}
+	
 	public function setGnOverride($template, $overrideObj = false, $up_levels = 5) {
 		$overrideObj = $overrideObj ? $overrideObj : $this;
         
