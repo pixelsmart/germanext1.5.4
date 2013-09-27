@@ -63,22 +63,28 @@ function setHrefQueryVar(variable, newValue, hrefAttr)
 	return newHref;
 }
 
+function setPaymentOption() {
+	var selectedMethod = $('input[name=payment_module]:checked');
+	
+	if (selectedMethod.length > 0) {
+		var content = selectedMethod.next('label'),
+		    paymentOptionInput = content.find('.masterpaymentOptions'),
+		    paymentOption;
+		    
+		if (paymentOptionInput.length > 0) {
+			paymentOption = paymentOptionInput.val();
+			
+			var orderSubmit = $('a#button_order');
+			
+			$('a#button_order').attr('href', setHrefQueryVar('payment_method', paymentOption, orderSubmit.attr('href')));
+		}	
+	}
+}
+
 $(document).ready(function(){
-    $('input[name=payment_module]').click(function(){
-        var that = $(this);
-        $('#opc_payment_methods-overlay').ajaxStop(function(){
-            var content = that.next('label'),
-                paymentOptionInput = content.find('.masterpaymentOptions'),
-                paymentOption;
-                
-            if (paymentOptionInput.length > 0)
-            {
-                paymentOption = paymentOptionInput.val();
-                
-                var orderSubmit = $('#button_order');
-                
-                orderSubmit.attr('href', setHrefQueryVar('payment_method', paymentOption, orderSubmit.attr('href')));
-            }
-        });
-    });
+	setPaymentOption();
+	
+	$('input[name=payment_module]').click(function(){
+	    setPaymentOption();
+	});
 });
