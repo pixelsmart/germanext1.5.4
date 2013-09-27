@@ -1,5 +1,5 @@
 {if $embedScript}
-<script type="text/javascript" src="{$modules_dir}germanext/payment/modules/masterpayment/masterpayment.js"></script>
+<script type="text/javascript" src="{$smarty.const._MODULE_DIR_}germanext/payment/modules/masterpayment/masterpayment.js"></script>
 {/if}
 <img src="{$payment_image}" {if $payment_name}alt="{$payment_name}" title="{$payment_name}"{/if}/>
 {if $payment_name}
