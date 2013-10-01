@@ -11,6 +11,13 @@ $_gn_db_alter = array(
             'data'  => 'DECIMAL(20, 3) NOT NULL DEFAULT \'0.000\'',
             'after' => 'unit_price_ratio',
             'drop'  => false
+        ),
+        array(
+            'type'  => 'add',
+            'field' => 'id_base_unit',
+            'data'  => 'INT(10) NOT NULL DEFAULT \'0\'',
+            'after' => 'unit_net',
+            'drop'  => false
         )
     ),
     'product_lang' => array(
