@@ -15,6 +15,10 @@ class ProductController extends ProductControllerCore
 		if ($avLaterOrig == '') {
 			$this->product->available_later = Configuration::get('GN_AVAILABLE_LATER', $id_lang);
 		}
+		
+		if ($this->product->id_base_unit) {
+			$this->product->unity = Germanext::getBaseUnitById($this->product->id_base_unit, $id_lang);
+		}
 	}
 	
 	protected function assignAttributesGroups() {
