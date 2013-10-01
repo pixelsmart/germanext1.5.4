@@ -2,10 +2,15 @@
 class Product extends ProductCore
 {
 	public $unit_net;
+	public $id_base_unit;
 	
 	public function __construct($id_product = null, $full = false, $id_lang = null, $id_shop = null, Context $context = null) {
 		if ( ! array_key_exists('unit_net', self::$definition['fields'])) {
 			self::$definition['fields']['unit_net'] = array('type' => parent::TYPE_STRING, 'validate' => 'isString');
+		}
+		
+		if ( ! array_key_exists('id_base_unit', self::$definition['fields'])) {
+			self::$definition['fields']['id_base_unit'] = array('type' => parent::TYPE_INT, 'validate' => 'isUnsignedId');
 		}
 		
 		parent::__construct($id_product, $full, $id_lang, $id_shop, $context);
@@ -15,6 +20,7 @@ class Product extends ProductCore
 		parent::validateFields();
 
 		$fields['unit_net'] = pSQL($this->unit_net);
+		$fields['id_base_unit'] = pSQL($this->id_base_unit);
         
 		return parent::getFields();
 	}
