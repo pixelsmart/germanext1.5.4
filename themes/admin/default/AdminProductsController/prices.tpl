@@ -30,6 +30,22 @@ var Customer = new Object();
 var product_url = '{$link->getAdminLink('AdminProducts', true)}';
 var ecotax_tax_excl = parseFloat({$ecotax_tax_excl});
 $(document).ready(function () {
+	function setBaseUnitId() {
+		selected_value = parseInt($('#unity').find('option:selected').attr('rel'));
+		
+		if (isNaN(selected_value)) {
+			selected_value = 0;
+		}
+		
+		$('input[name=id_base_unit]').val(selected_value);
+	}
+	
+	setBaseUnitId();
+	
+	$('#unity').change(function(){
+		setBaseUnitId();
+	});
+	
 	Customer = {
 		"hiddenField": jQuery('#id_customer'),
 		"field": jQuery('#customer'),
@@ -237,9 +253,10 @@ function updateUnitNet()
 			{$currency->prefix} <input size="11" maxlength="14" id="unit_price" name="unit_price" type="text" value="{$unit_price|string_format:'%.2f'}"
 				onkeyup="if (isArrowKey(event)) return ;this.value = this.value.replace(/,/g, '.'); unitPriceWithTax('unit');"/>{$currency->suffix}
 			{l s='/' mod='germanext'} <!--<input size="6" maxlength="10" id="unity" name="unity" type="text" value="{$product->unity|htmlentitiesUTF8}" onkeyup="if (isArrowKey(event)) return ;unitySecond();" onchange="unitySecond();"/> -->
+			<input type="hidden" name="id_base_unit" value="{$product->id_base_unit}" />
 			<select onchange="unitySecond();" name="unity" id="unity">
 				{foreach $unities as $unity}
-					<option value="{$unity.name}" {if $unity.name == $product->unity} selected="selected"{/if}>{$unity.name}</option>
+					<option value="{$unity.name}" rel="{$unity.id_base_unit}" {if $unity.id_base_unit == $product->id_base_unit} selected="selected"{/if}>{$unity.name}</option>
 				{/foreach}
 			</select>
 			{if $ps_tax && $country_display_tax_label}
