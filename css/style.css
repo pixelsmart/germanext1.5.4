@@ -6,3 +6,8 @@
 
 tfoot, table#cart_summary tr.cart_item.odd, table#cart_summary tr.cart_total_delivery, table#cart_summary tr.cart_total_price, table#cart_summary tr.cart_total_voucher { background-color: #f3f3f3!important; }
 #product .gn_block { display: block; clear: both; }
+
+#order-detail-content ul#order_payments {
+    display: inline-block;
+    list-style: none;
+}
