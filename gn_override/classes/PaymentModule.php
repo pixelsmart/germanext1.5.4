@@ -257,7 +257,7 @@ abstract class PaymentModule extends PaymentModuleCore
 					foreach ($products as $key => $product) {
 						$price = Product::getPriceStatic((int)$product['id_product'], false, ($product['id_product_attribute'] ? (int)$product['id_product_attribute'] : null), 6, null, false, true, $product['cart_quantity'], false, (int)$order->id_customer, (int)$order->id_cart, (int)$order->{Configuration::get('PS_TAX_ADDRESS_TYPE')});
 						$price_wt = Product::getPriceStatic((int)$product['id_product'], true, ($product['id_product_attribute'] ? (int)$product['id_product_attribute'] : null), 2, null, false, true, $product['cart_quantity'], false, (int)$order->id_customer, (int)$order->id_cart, (int)$order->{Configuration::get('PS_TAX_ADDRESS_TYPE')});
-						$availability = Tools::isEmpty(trim($product['available_now'])) ? Configuration::get('GN_AVAILABLE_NOW', (int)$cart->id_lang) : $product['available_now'];
+						$availability = Tools::isEmpty(trim($product['available_now'])) ? Configuration::get('GN_AVAILABLE_NOW', (int)$this->context->cart->id_lang) : $product['available_now'];
 
 						$customization_quantity = 0;
 						$customized_datas = Product::getAllCustomizedDatas((int)$order->id_cart);
