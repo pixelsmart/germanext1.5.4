@@ -1359,6 +1359,10 @@ class Germanext extends Module
 					$ObjList = $list . '/' . ltrim(ltrim($obj, '/'), '\\');
 					$ObjFrom = $src . '/' . ltrim(ltrim($obj, '/'), '\\');
 					$ObjTo   = $dst . '/' . ltrim(ltrim($obj, '/'), '\\');
+					
+					if (self::stringStartsWith($ObjTo, _PS_MODULE_DIR_) && is_dir($ObjList) && ! is_dir($ObjTo)) {
+						continue;
+					}
                     
 					if (is_dir($ObjList)) {
 						if (strcmp($obj, 'admin') == 0) {  
