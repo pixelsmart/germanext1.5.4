@@ -176,7 +176,7 @@
 				{/if}
 				{if (isset($PS_PSTATISTIC) && $PS_PSTATISTIC == 1) && ( ! isset($GN_FORCE_STAT_GATHER) || $GN_FORCE_STAT_GATHER == 0)} 
 				<p class="checkbox">
-					<input type="checkbox" id="statistic" name="statistic" value="1" {if $smarty.post.statistic == 1} checked="checked"{/if} />
+					<input type="checkbox" id="statistic" name="statistic" value="1" {if isset($smarty.post.statistic) && $smarty.post.statistic == 1} checked="checked"{/if} />
 					<label for="statistic">{l s='I accept personal visit statistic' mod='germanext'}</label>
 				</p>
 				{/if}
