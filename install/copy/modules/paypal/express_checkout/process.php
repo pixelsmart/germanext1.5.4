@@ -411,6 +411,12 @@ class PaypalExpressCheckout extends Paypal
 
 		if ($this->context->cart->gift == 1)
 			$total = Tools::ps_round($total + $this->getGiftWrappingPrice(), $this->decimals);
+			
+		if (property_exists($this->context->cart, 'id_payment')) {
+			$payment_fees = $this->context->cart->getOrderTotal(true, cart::ONLY_PAYMENT);
+			
+			$total = Tools::ps_round($total + $payment_fees, $this->decimals);
+		}
 		
 		if (_PS_VERSION_ < '1.5')
 		{
