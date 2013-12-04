@@ -92,6 +92,7 @@ class gn_masterpayment extends GN_PaymentManager
 		//URL's
 		$order_confirmation_url = $link->getPageLink('order-confirmation.php').'?id_cart='.(int)$cart->id.'&id_module='.(int)$instance->module->id.'&key='.$customer->secure_key;
 		$order_validation_url = Tools::getShopDomain(true, true).__PS_BASE_URI__.'modules/masterpayment/'.'validation.php';
+		$order_error_url = $link->getModuleLink('masterpayment', 'error');
 
 		require_once(dirname(__FILE__).'/../../../../masterpayment/lib/api.php');
 		//MasterPayment API
@@ -108,9 +109,9 @@ class gn_masterpayment extends GN_PaymentManager
 		$api->paymentType = $payment_method;
 		$api->gatewayStyle = $cfg['MP_GATEWAY_STYLE'];
 		$api->UrlPatternSuccess = $order_validation_url;
-		$api->UrlPatternFailure = $order_validation_url;
+		$api->UrlPatternFailure = $order_error_url;
 		$api->UrlRedirectSuccess = $order_confirmation_url;
-		$api->UrlRedirectFailure = $order_confirmation_url;
+		$api->UrlRedirectFailure = $order_error_url;
 		$api->UrlRedirectCancel = $link->getPageLink('order.php').'?step=3';
 		$api->showCancelOption = (int)$cfg['MP_CANCEL_OPTION'];
 		
@@ -120,6 +121,7 @@ class gn_masterpayment extends GN_PaymentManager
 		$api->lastname = $customer->lastname;
 		$api->email = $customer->email;
 		$api->street = $address->address1 .' '. $address->address2;
+		$api->houseNumber = '.';
 		$api->zipCode = $address->postcode;
 		$api->city = $address->city;
 		$api->country = Country::getIsoById($address->id_country);
